@@ -9,14 +9,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun rememberMLKitAppState(
+fun rememberMlkAppState(
     navController: NavHostController = rememberNavController()
-): MLKitAppState = remember(navController) {
-    MLKitAppState(navController = navController)
+): MlkAppState = remember(navController) {
+    MlkAppState(navController = navController)
 }
 
 @Stable
-class MLKitAppState(
+class MlkAppState(
     val navController: NavHostController
 ) {
     val currentDestination: NavDestination?

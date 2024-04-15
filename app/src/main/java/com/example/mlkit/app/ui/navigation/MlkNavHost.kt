@@ -5,13 +5,15 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.mlkit.core.model.PMLKitFeature
-import com.example.mlkit.feature.documentscanner.navigation.documentScannerScreen
-import com.example.mlkit.feature.documentscanner.navigation.navigateToDocumentScanner
+import com.example.mlkit.feature.documentscanner.presentation.navigation.documentScannerScreen
+import com.example.mlkit.feature.documentscanner.presentation.navigation.navigateToDocumentScanner
 import com.example.mlkit.feature.explorer.presentation.navigation.EXPLORER_ROUTE
 import com.example.mlkit.feature.explorer.presentation.navigation.explorerScreen
+import com.example.mlkit.feature.textrecognition.presentation.navigation.navigateToTextRecognition
+import com.example.mlkit.feature.textrecognition.presentation.navigation.textRecognitionScreen
 
 @Composable
-fun MLKitNavHost(
+fun MlkNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     startDestination: String = EXPLORER_ROUTE,
@@ -22,11 +24,17 @@ fun MLKitNavHost(
         modifier = modifier,
     ) {
         explorerScreen(onFeatureClick = { feature ->
-            when(feature) {
+            when (feature) {
                 is PMLKitFeature.DocumentScanner -> navController.navigateToDocumentScanner()
+                is PMLKitFeature.TextRecognition -> navController.navigateToTextRecognition()
             }
         })
 
-        documentScannerScreen()
+        documentScannerScreen(onBackClick = {
+            navController.popBackStack()
+        })
+        textRecognitionScreen(onBackClick = {
+            navController.popBackStack()
+        })
     }
 }

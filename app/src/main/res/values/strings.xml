@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">ML Kit Demo</string>
-    <string name="document_scanner_label">Document Reader</string>
+    <string name="back">Back</string>
+
+    <string name="error_default">Something went wrong, please try again later.</string>
+    <string name="camera_permission_requester_title">Camera Permission Required</string>
+    <string name="camera_permission_requester_message">This feature needs to use your camera in order to work, so you should grant us permission to do so.</string>
+    <string name="camera_permission_requester_button">Grant permission</string>
+    <string name="feature_document_scanner_title">Document Scanner</string>
+    <string name="feature_document_scanner_description">Digitize physical documents from pictures.</string>
+
+    <string name="feature_text_recognition_title">Text Recognition</string>
+    <string name="feature_text_recognition_description">Recognize and extract text from images.</string>
+
     <string name="document_scanner_scan_document_button">Scan Document</string>
     <string name="document_scanner_save_document_button">Save Document</string>
+    <string name="document_scanner_saved_message">Document Saved</string>
+
 </resources>
