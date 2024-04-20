@@ -9,7 +9,6 @@ import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,9 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -31,23 +28,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mlkit.R
 import com.example.mlkit.app.ui.theme.MlkTheme
 import com.example.mlkit.core.presentation.component.CameraPermissionRequester
 import com.example.mlkit.core.presentation.component.MlkTopAppBar
-import com.example.mlkit.feature.textrecognition.presentation.util.TextRecognitionAnalyzer
+import com.example.mlkit.feature.textrecognition.presentation.analyzer.TextRecognitionAnalyzer
 
 @Composable
 fun TextRecognitionRoute(
     modifier: Modifier = Modifier,
+    textRecognitionViewModel: TextRecognitionViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
-    var detectedText: String? by remember { mutableStateOf(null) }
+    val state by textRecognitionViewModel.state.collectAsStateWithLifecycle()
     TextRecognitionScreen(
         modifier = modifier,
-        detectedText = detectedText,
-        onDetectedTextUpdated = { detectedText = it },
+        recognizedText = state.recognizedText,
+        onTextRecognized = { textRecognitionViewModel.updateRecognizedText(text = it) },
         onBackClick = onBackClick
     )
 }
@@ -56,8 +56,8 @@ fun TextRecognitionRoute(
 @Composable
 private fun TextRecognitionScreen(
     modifier: Modifier = Modifier,
-    detectedText: String?,
-    onDetectedTextUpdated: (String) -> Unit,
+    recognizedText: String?,
+    onTextRecognized: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -73,7 +73,7 @@ private fun TextRecognitionScreen(
             ) {
                 CameraPreview(
                     modifier = Modifier.weight(3.0f),
-                    onDetectedTextUpdated = onDetectedTextUpdated
+                    onTextRecognized = onTextRecognized
                 )
                 Column(
                     modifier = Modifier
@@ -87,7 +87,7 @@ private fun TextRecognitionScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
-                        text = detectedText ?: "",
+                        text = recognizedText ?: "",
                     )
                 }
             }
@@ -98,7 +98,7 @@ private fun TextRecognitionScreen(
 @Composable
 private fun CameraPreview(
     modifier: Modifier,
-    onDetectedTextUpdated: (String) -> Unit
+    onTextRecognized: (String) -> Unit
 ) {
     val context: Context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
@@ -116,10 +116,11 @@ private fun CameraPreview(
                 implementationMode = PreviewView.ImplementationMode.COMPATIBLE
                 scaleType = PreviewView.ScaleType.FILL_START
             }.also { previewView ->
-                cameraController.imageAnalysisTargetSize = CameraController.OutputSize(AspectRatio.RATIO_16_9)
+                cameraController.imageAnalysisTargetSize =
+                    CameraController.OutputSize(AspectRatio.RATIO_16_9)
                 cameraController.setImageAnalysisAnalyzer(
                     ContextCompat.getMainExecutor(it),
-                    TextRecognitionAnalyzer(onDetectedTextUpdated = onDetectedTextUpdated)
+                    TextRecognitionAnalyzer(onDetectedTextUpdated = onTextRecognized)
                 )
 
                 cameraController.bindToLifecycle(lifecycleOwner)
@@ -134,8 +135,8 @@ private fun CameraPreview(
 private fun TextRecognitionScreenPreview() {
     MlkTheme {
         TextRecognitionScreen(
-            detectedText = "Test Text",
-            onDetectedTextUpdated = {},
+            recognizedText = "Test Text",
+            onTextRecognized = {},
             onBackClick = {})
     }
 }

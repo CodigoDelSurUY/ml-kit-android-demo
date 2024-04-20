@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.google.hilt.android)
+    implementation(libs.google.play.services.vision.common)
+    implementation(libs.androidx.camera.mlkit.vision)
     kapt(libs.google.hilt.compiler)
     implementation(libs.coil.compose)
     implementation(libs.camerax.core)
@@ -74,6 +76,7 @@ dependencies {
     implementation(libs.google.accompanist)
     implementation(libs.google.mlkit.documentScanner)
     implementation(libs.google.mlkit.textRecognition)
+    implementation(libs.google.mlkit.faceDetection)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -16,4 +16,7 @@
     <string name="document_scanner_save_document_button">Save Document</string>
     <string name="document_scanner_saved_message">Document Saved</string>
 
+    <string name="feature_face_detection_title">Face detection</string>
+    <string name="feature_face_detection_description">Detect faces and facial landmarks.</string>
+
 </resources>

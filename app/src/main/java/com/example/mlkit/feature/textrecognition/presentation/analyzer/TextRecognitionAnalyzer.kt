@@ -1,4 +1,4 @@
-package com.example.mlkit.feature.textrecognition.presentation.util
+package com.example.mlkit.feature.textrecognition.presentation.analyzer
 
 import android.media.Image
 import androidx.annotation.OptIn

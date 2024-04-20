@@ -9,6 +9,8 @@ import com.example.mlkit.feature.documentscanner.presentation.navigation.documen
 import com.example.mlkit.feature.documentscanner.presentation.navigation.navigateToDocumentScanner
 import com.example.mlkit.feature.explorer.presentation.navigation.EXPLORER_ROUTE
 import com.example.mlkit.feature.explorer.presentation.navigation.explorerScreen
+import com.example.mlkit.feature.facedetection.presentation.navigation.faceDetectionScreen
+import com.example.mlkit.feature.facedetection.presentation.navigation.navigateToFaceDetection
 import com.example.mlkit.feature.textrecognition.presentation.navigation.navigateToTextRecognition
 import com.example.mlkit.feature.textrecognition.presentation.navigation.textRecognitionScreen
 
@@ -27,6 +29,7 @@ fun MlkNavHost(
             when (feature) {
                 is PMLKitFeature.DocumentScanner -> navController.navigateToDocumentScanner()
                 is PMLKitFeature.TextRecognition -> navController.navigateToTextRecognition()
+                is PMLKitFeature.FaceDetection -> navController.navigateToFaceDetection()
             }
         })
 
@@ -34,6 +37,9 @@ fun MlkNavHost(
             navController.popBackStack()
         })
         textRecognitionScreen(onBackClick = {
+            navController.popBackStack()
+        })
+        faceDetectionScreen(onBackClick = {
             navController.popBackStack()
         })
     }

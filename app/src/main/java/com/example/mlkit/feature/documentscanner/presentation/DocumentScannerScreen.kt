@@ -17,15 +17,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.mlkit.R
 import com.example.mlkit.app.ui.theme.MlkTheme
@@ -43,12 +42,11 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
 @Composable
 fun DocumentScannerRoute(
     modifier: Modifier = Modifier,
+    documentScannerViewModel: DocumentScannerViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
+    val state by documentScannerViewModel.state.collectAsStateWithLifecycle()
     val activity = LocalContext.current.findActivity()
-    var showSaveSuccess by remember { mutableStateOf(false) }
-    var scanError by remember { mutableStateOf<String?>(null) }
-    var documentScan by remember { mutableStateOf<GmsDocumentScanningResult?>(null) }
     val options = GmsDocumentScannerOptions.Builder()
         .setScannerMode(SCANNER_MODE_FULL)
         .setGalleryImportAllowed(true)
@@ -61,7 +59,8 @@ fun DocumentScannerRoute(
         contract = ActivityResultContracts.StartIntentSenderForResult()
     ) { activityResult ->
         if (activityResult.resultCode == RESULT_OK) {
-            documentScan = GmsDocumentScanningResult.fromActivityResultIntent(activityResult.data)
+            val result = GmsDocumentScanningResult.fromActivityResultIntent(activityResult.data)
+            documentScannerViewModel.updateDocumentScan(result = result)
         }
     }
 
@@ -69,45 +68,48 @@ fun DocumentScannerRoute(
         contract = ActivityResultContracts.CreateDocument("application/pdf")
     ) { uri: Uri? ->
         uri?.let { targetUri ->
-            documentScan?.pdf?.uri?.let { sourceUri ->
+            state.scanningResult?.pdf?.uri?.let { sourceUri ->
                 try {
                     activity.contentResolver.openInputStream(sourceUri)?.use { inputStream ->
                         activity.contentResolver.openOutputStream(targetUri)?.use { outputStream ->
                             inputStream.copyTo(outputStream)
                         }
                     }
-                    documentScan = null
-                    showSaveSuccess = true
+                    documentScannerViewModel.showSaveSuccess()
                 } catch (th: Throwable) {
-                    scanError = th.message
+                    th.message?.let {
+                        documentScannerViewModel.showScannerError(error = it)
+                    }
                 }
             }
         }
     }
 
-    if (scanError != null) {
-        ShowSnackbarEffect(snackbar = PSnackbar.Text(scanError)) {
-            scanError = null
+    state.scannerError?.let {
+        ShowSnackbarEffect(snackbar = PSnackbar.Text(it)) {
+            documentScannerViewModel.hideScannerError()
         }
     }
 
-    if (showSaveSuccess) {
+    if (state.saveSuccess) {
         ShowSnackbarEffect(snackbar = PSnackbar.Resource(R.string.document_scanner_saved_message)) {
-            showSaveSuccess = false
+            documentScannerViewModel.hideSaveSuccess()
         }
     }
 
     DocumentScannerScreen(
         modifier = modifier,
-        documentPages = documentScan?.pages?.map { it.imageUri } ?: emptyList(),
+        documentPages = state.scanningResult?.pages?.map { it.imageUri } ?: emptyList(),
         onScanClick = {
             scanner.getStartScanIntent(activity)
                 .addOnSuccessListener {
                     scannerLauncher
                         .launch(IntentSenderRequest.Builder(it).build())
                 }
-                .addOnFailureListener {
-                    scanError = it.message
+                .addOnFailureListener { failure ->
+                    failure.message?.let {
+                        documentScannerViewModel.showScannerError(error = it)
+                    }
                 }
         },
         onSaveClick = {
