@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mlkit.R
 import com.example.mlkit.app.ui.theme.MlkTheme
 import com.example.mlkit.core.presentation.component.CameraPermissionRequester
+import com.example.mlkit.core.presentation.component.MikCameraPreview
 import com.example.mlkit.core.presentation.component.MlkTopAppBar
 import com.example.mlkit.feature.textrecognition.presentation.analyzer.TextRecognitionAnalyzer
 
@@ -71,9 +72,14 @@ private fun TextRecognitionScreen(
             Column(
                 modifier = modifier.fillMaxSize()
             ) {
-                CameraPreview(
+                MikCameraPreview(
                     modifier = Modifier.weight(3.0f),
-                    onTextRecognized = onTextRecognized
+                    setUpDetector = { cameraController, context ->
+                        cameraController.setImageAnalysisAnalyzer(
+                            ContextCompat.getMainExecutor(context),
+                            TextRecognitionAnalyzer(onDetectedTextUpdated = onTextRecognized)
+                        )
+                    }
                 )
                 Column(
                     modifier = Modifier
@@ -93,41 +99,6 @@ private fun TextRecognitionScreen(
             }
         }
     }
-}
-
-@Composable
-private fun CameraPreview(
-    modifier: Modifier,
-    onTextRecognized: (String) -> Unit
-) {
-    val context: Context = LocalContext.current
-    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-    val cameraController: LifecycleCameraController =
-        remember { LifecycleCameraController(context) }
-    AndroidView(
-        modifier = modifier,
-        factory = {
-            PreviewView(it).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
-                setBackgroundColor(Color.BLACK)
-                implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-                scaleType = PreviewView.ScaleType.FILL_START
-            }.also { previewView ->
-                cameraController.imageAnalysisTargetSize =
-                    CameraController.OutputSize(AspectRatio.RATIO_16_9)
-                cameraController.setImageAnalysisAnalyzer(
-                    ContextCompat.getMainExecutor(it),
-                    TextRecognitionAnalyzer(onDetectedTextUpdated = onTextRecognized)
-                )
-
-                cameraController.bindToLifecycle(lifecycleOwner)
-                previewView.controller = cameraController
-            }
-        }
-    )
 }
 
 @Preview

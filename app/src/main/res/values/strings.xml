@@ -18,5 +18,9 @@
 
     <string name="feature_face_detection_title">Face detection</string>
     <string name="feature_face_detection_description">Detect faces and facial landmarks.</string>
+    <string name="face_detection_show_bounding_boxes">Show bounding boxes</string>
+    <string name="face_detection_hide_bounding_boxes">Hide bounding boxes</string>
+    <string name="face_detection_show_hat">Show hat</string>
+    <string name="face_detection_hide_hat">Hide hat</string>
 
 </resources>
