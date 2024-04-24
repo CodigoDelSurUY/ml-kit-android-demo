@@ -30,10 +30,10 @@ import com.example.mlkit.core.model.PMLKitFeature
 @Composable
 fun ExplorerRoute(
     modifier: Modifier = Modifier,
-    explorerViewModel: ExplorerViewModel = hiltViewModel(),
+    viewModel: ExplorerViewModel = hiltViewModel(),
     onFeatureClick: (PMLKitFeature) -> Unit
 ) {
-    val state by explorerViewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     ExplorerScreen(
         modifier = modifier,
         features = state.features,

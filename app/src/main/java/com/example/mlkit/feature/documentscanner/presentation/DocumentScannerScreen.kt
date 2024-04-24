@@ -42,10 +42,10 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
 @Composable
 fun DocumentScannerRoute(
     modifier: Modifier = Modifier,
-    documentScannerViewModel: DocumentScannerViewModel = hiltViewModel(),
+    viewModel: DocumentScannerViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
-    val state by documentScannerViewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val activity = LocalContext.current.findActivity()
     val options = GmsDocumentScannerOptions.Builder()
         .setScannerMode(SCANNER_MODE_FULL)
@@ -60,7 +60,7 @@ fun DocumentScannerRoute(
     ) { activityResult ->
         if (activityResult.resultCode == RESULT_OK) {
             val result = GmsDocumentScanningResult.fromActivityResultIntent(activityResult.data)
-            documentScannerViewModel.updateDocumentScan(result = result)
+            viewModel.updateDocumentScan(result = result)
         }
     }
 
@@ -75,10 +75,10 @@ fun DocumentScannerRoute(
                             inputStream.copyTo(outputStream)
                         }
                     }
-                    documentScannerViewModel.showSaveSuccess()
+                    viewModel.showSaveSuccess()
                 } catch (th: Throwable) {
                     th.message?.let {
-                        documentScannerViewModel.showScannerError(error = it)
+                        viewModel.showScannerError(error = it)
                     }
                 }
             }
@@ -87,13 +87,13 @@ fun DocumentScannerRoute(
 
     state.scannerError?.let {
         ShowSnackbarEffect(snackbar = PSnackbar.Text(it)) {
-            documentScannerViewModel.hideScannerError()
+            viewModel.hideScannerError()
         }
     }
 
     if (state.saveSuccess) {
         ShowSnackbarEffect(snackbar = PSnackbar.Resource(R.string.document_scanner_saved_message)) {
-            documentScannerViewModel.hideSaveSuccess()
+            viewModel.hideSaveSuccess()
         }
     }
 
@@ -108,7 +108,7 @@ fun DocumentScannerRoute(
                 }
                 .addOnFailureListener { failure ->
                     failure.message?.let {
-                        documentScannerViewModel.showScannerError(error = it)
+                        viewModel.showScannerError(error = it)
                     }
                 }
         },

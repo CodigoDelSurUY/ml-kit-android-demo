@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.google.mlkit.documentScanner)
     implementation(libs.google.mlkit.textRecognition)
     implementation(libs.google.mlkit.faceDetection)
+    implementation(libs.google.mlkit.objectDetection)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

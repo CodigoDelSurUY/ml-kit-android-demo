@@ -84,7 +84,8 @@ private fun FaceDetectionScreen(
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         MlkTopAppBar(
-            titleRes = R.string.feature_face_detection_title, onNavigationClick = onBackClick
+            titleRes = R.string.feature_face_detection_title,
+            onNavigationClick = onBackClick
         )
         CameraPermissionRequester(
             modifier = Modifier.weight(1.0f)
@@ -111,6 +112,19 @@ private fun FaceDetectionScreen(
                             onFacesDetected(faces.orEmpty())
                         })
                     })
+
+                if (showBoundingBoxes) {
+                    BoundingBoxesOverlay(
+                        modifier = Modifier.fillMaxSize(),
+                        faces = detectedFaces
+                    )
+                }
+                if (showHat) {
+                    HatOverlay(
+                        modifier = Modifier.fillMaxSize(),
+                        faces = detectedFaces
+                    )
+                }
 
                 Column(
                     modifier = Modifier
@@ -159,16 +173,6 @@ private fun FaceDetectionScreen(
                             style = Typography.titleLarge
                         )
                     }
-                    if (showBoundingBoxes) {
-                        BoundingBoxesOverlay(
-                            modifier = Modifier.fillMaxSize(), faces = detectedFaces
-                        )
-                    }
-                    if (showHat) {
-                        HatOverlay(
-                            modifier = Modifier.fillMaxSize(), faces = detectedFaces
-                        )
-                    }
                 }
             }
         }
@@ -177,7 +181,8 @@ private fun FaceDetectionScreen(
 
 @Composable
 private fun BoundingBoxesOverlay(
-    modifier: Modifier, faces: List<Face>
+    modifier: Modifier,
+    faces: List<Face>
 ) {
     Canvas(modifier = modifier.clipToBounds()) {
         for (face in faces) {

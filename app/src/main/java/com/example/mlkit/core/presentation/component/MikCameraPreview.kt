@@ -28,7 +28,7 @@ import com.example.mlkit.R
 @Composable
 fun MikCameraPreview(
     modifier: Modifier,
-    setUpDetector: (LifecycleCameraController, Context) -> Unit
+    setUpDetector: (LifecycleCameraController, Context) -> Unit,
 ) {
     val context: Context = LocalContext.current
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current

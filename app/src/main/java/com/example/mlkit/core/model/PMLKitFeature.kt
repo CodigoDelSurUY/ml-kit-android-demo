@@ -27,10 +27,17 @@ sealed class PMLKitFeature(
         descriptionRes = R.string.feature_face_detection_description
     )
 
+    data object ObjectDetection : PMLKitFeature(
+        imageRes = R.drawable.card_object_detection,
+        titleRes = R.string.feature_object_detection_title,
+        descriptionRes = R.string.feature_object_detection_description
+    )
+
     companion object {
         val all = listOf(
             TextRecognition,
             FaceDetection,
+            ObjectDetection,
             DocumentScanner
         )
     }

@@ -23,4 +23,9 @@
     <string name="face_detection_show_hat">Show hat</string>
     <string name="face_detection_hide_hat">Hide hat</string>
 
+    <string name="feature_object_detection_title">Object Detection</string>
+    <string name="feature_object_detection_description">Localize and track in real time one or more objects in the live camera feed.</string>
+    <string name="object_detection_hide_unlabeled">Hide unlabeled</string>
+    <string name="object_detection_show_all">Show all</string>
+
 </resources>
