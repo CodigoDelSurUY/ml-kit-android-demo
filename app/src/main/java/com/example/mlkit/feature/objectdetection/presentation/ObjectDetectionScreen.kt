@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -33,9 +34,10 @@ import com.example.mlkit.app.ui.theme.Typography
 import com.example.mlkit.core.presentation.component.CameraPermissionRequester
 import com.example.mlkit.core.presentation.component.MikCameraPreview
 import com.example.mlkit.core.presentation.component.MlkTopAppBar
+import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.objects.DetectedObject
 import com.google.mlkit.vision.objects.ObjectDetection
-import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
+import com.google.mlkit.vision.objects.custom.CustomObjectDetectorOptions
 import kotlin.random.Random
 
 @Composable
@@ -69,6 +71,7 @@ private fun ObjectDetectionScreen(
     onToggleHideUnlabeled: () -> Unit,
     onBackClick: () -> Unit
 ) {
+    val currentOnObjectDetected by rememberUpdatedState(onObjectDetected)
     Column(modifier = modifier.fillMaxSize()) {
         MlkTopAppBar(
             titleRes = R.string.feature_object_detection_title,
@@ -80,24 +83,38 @@ private fun ObjectDetectionScreen(
             Box(modifier = Modifier.fillMaxSize()) {
                 MikCameraPreview(modifier = modifier.fillMaxSize(),
                     setUpDetector = { cameraController, context ->
-                        val options = ObjectDetectorOptions.Builder()
-                            .setDetectorMode(ObjectDetectorOptions.STREAM_MODE)
-                            .enableMultipleObjects()
-                            .enableClassification()
+//                        val options = ObjectDetectorOptions.Builder()
+//                            .setDetectorMode(ObjectDetectorOptions.STREAM_MODE)
+//                            .enableMultipleObjects()
+//                            .enableClassification()
+//                            .build()
+//                        val objectDetector = ObjectDetection.getClient(options)
+
+                        val localModel = LocalModel.Builder()
+                            .setAssetFilePath("efficientnet.tflite")
                             .build()
-                        val objectDetector = ObjectDetection.getClient(options)
+
+                        val customObjectDetectorOptions =
+                            CustomObjectDetectorOptions.Builder(localModel)
+                                .setDetectorMode(CustomObjectDetectorOptions.STREAM_MODE)
+                                .enableMultipleObjects()
+                                .enableClassification()
+                                .build()
+
+                        val objectDetector =
+                            ObjectDetection.getClient(customObjectDetectorOptions)
 
                         cameraController.setImageAnalysisAnalyzer(
                             ContextCompat.getMainExecutor(
-                            context
-                        ), MlKitAnalyzer(
-                            listOf(objectDetector),
-                            ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED,
-                            ContextCompat.getMainExecutor(context)
-                        ) { result: MlKitAnalyzer.Result? ->
-                            val objects = result?.getValue(objectDetector)
-                            onObjectDetected(objects.orEmpty())
-                        })
+                                context
+                            ), MlKitAnalyzer(
+                                listOf(objectDetector),
+                                ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED,
+                                ContextCompat.getMainExecutor(context)
+                            ) { result: MlKitAnalyzer.Result? ->
+                                val objects = result?.getValue(objectDetector)
+                                currentOnObjectDetected(objects.orEmpty())
+                            })
                     }
                 )
 

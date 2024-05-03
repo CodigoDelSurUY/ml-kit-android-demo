@@ -28,4 +28,7 @@
     <string name="object_detection_hide_unlabeled">Hide unlabeled</string>
     <string name="object_detection_show_all">Show all</string>
 
+    <string name="feature_barcode_scanner_title">Barcode Scanner</string>
+    <string name="feature_barcode_scanner_description">Scan and process barcodes. Supports most standard 1D and 2D formats.</string>
+
 </resources>

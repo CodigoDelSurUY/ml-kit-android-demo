@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.mlkit.core.model.PMLKitFeature
+import com.example.mlkit.feature.barcodescanner.presentation.navigation.barcodeScannerScreen
+import com.example.mlkit.feature.barcodescanner.presentation.navigation.navigateToBarcodeScanner
 import com.example.mlkit.feature.documentscanner.presentation.navigation.documentScannerScreen
 import com.example.mlkit.feature.documentscanner.presentation.navigation.navigateToDocumentScanner
 import com.example.mlkit.feature.explorer.presentation.navigation.EXPLORER_ROUTE
@@ -31,6 +33,7 @@ fun MlkNavHost(
             when (feature) {
                 is PMLKitFeature.DocumentScanner -> navController.navigateToDocumentScanner()
                 is PMLKitFeature.TextRecognition -> navController.navigateToTextRecognition()
+                is PMLKitFeature.BarcodeScanner -> navController.navigateToBarcodeScanner()
                 is PMLKitFeature.FaceDetection -> navController.navigateToFaceDetection()
                 is PMLKitFeature.ObjectDetection -> navController.navigateToObjectDetection()
             }
@@ -40,5 +43,6 @@ fun MlkNavHost(
         textRecognitionScreen { navController.popBackStack() }
         faceDetectionScreen { navController.popBackStack() }
         objectDetectionScreen { navController.popBackStack() }
+        barcodeScannerScreen { navController.popBackStack() }
     }
 }

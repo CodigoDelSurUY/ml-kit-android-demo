@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.AaptOptions
+
 plugins {
     kotlin("kapt")
     alias(libs.plugins.androidApplication)
@@ -49,6 +51,8 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    androidResources.noCompress.add("tflite")
 }
 
 dependencies {
@@ -78,6 +82,8 @@ dependencies {
     implementation(libs.google.mlkit.textRecognition)
     implementation(libs.google.mlkit.faceDetection)
     implementation(libs.google.mlkit.objectDetection)
+    implementation(libs.google.mlkit.objectDetectionCustom)
+    implementation(libs.google.mlkit.barcodeScanner)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

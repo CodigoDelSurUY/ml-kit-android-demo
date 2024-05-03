@@ -19,7 +19,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class TextRecognitionAnalyzer(
-    private val onDetectedTextUpdated: (String) -> Unit
+    private val onTextRecognized: (String) -> Unit
 ) : ImageAnalysis.Analyzer {
 
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -38,7 +38,7 @@ class TextRecognitionAnalyzer(
                     .addOnSuccessListener { visionText: Text ->
                         val detectedText: String = visionText.text
                         if (detectedText.isNotBlank()) {
-                            onDetectedTextUpdated(detectedText)
+                            onTextRecognized(detectedText)
                         }
                     }
                     .addOnFailureListener {

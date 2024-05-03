@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,6 +49,7 @@ private fun TextRecognitionScreen(
     onTextRecognized: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
+    val currentOnTextRecognized by rememberUpdatedState(onTextRecognized)
     Column(modifier = modifier.fillMaxSize()) {
         MlkTopAppBar(
             titleRes = R.string.feature_text_recognition_title,
@@ -64,7 +66,7 @@ private fun TextRecognitionScreen(
                     setUpDetector = { cameraController, context ->
                         cameraController.setImageAnalysisAnalyzer(
                             ContextCompat.getMainExecutor(context),
-                            TextRecognitionAnalyzer(onDetectedTextUpdated = onTextRecognized)
+                            TextRecognitionAnalyzer(onTextRecognized = currentOnTextRecognized)
                         )
                     }
                 )

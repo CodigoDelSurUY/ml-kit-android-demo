@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -24,7 +25,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.toComposeRect
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -82,6 +82,7 @@ private fun FaceDetectionScreen(
     onToggleHat: () -> Unit,
     onBackClick: () -> Unit
 ) {
+    val currentOnFacesDetected by rememberUpdatedState(onFacesDetected)
     Column(modifier = modifier.fillMaxSize()) {
         MlkTopAppBar(
             titleRes = R.string.feature_face_detection_title,
@@ -109,7 +110,7 @@ private fun FaceDetectionScreen(
                             ContextCompat.getMainExecutor(context)
                         ) { result: MlKitAnalyzer.Result? ->
                             val faces = result?.getValue(faceDetector)
-                            onFacesDetected(faces.orEmpty())
+                            currentOnFacesDetected(faces.orEmpty())
                         })
                     })
 
