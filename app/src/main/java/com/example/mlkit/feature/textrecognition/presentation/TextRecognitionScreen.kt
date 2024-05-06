@@ -22,7 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mlkit.R
 import com.example.mlkit.app.ui.theme.MlkTheme
 import com.example.mlkit.core.presentation.component.CameraPermissionRequester
-import com.example.mlkit.core.presentation.component.MikCameraPreview
+import com.example.mlkit.core.presentation.component.MlkCameraPreview
 import com.example.mlkit.core.presentation.component.MlkTopAppBar
 import com.example.mlkit.feature.textrecognition.presentation.analyzer.TextRecognitionAnalyzer
 
@@ -61,7 +61,7 @@ private fun TextRecognitionScreen(
             Column(
                 modifier = modifier.fillMaxSize()
             ) {
-                MikCameraPreview(
+                MlkCameraPreview(
                     modifier = Modifier.weight(3.0f),
                     setUpDetector = { cameraController, context ->
                         cameraController.setImageAnalysisAnalyzer(

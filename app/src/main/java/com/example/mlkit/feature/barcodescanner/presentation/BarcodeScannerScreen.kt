@@ -36,7 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mlkit.R
 import com.example.mlkit.app.ui.theme.MlkTheme
 import com.example.mlkit.core.presentation.component.CameraPermissionRequester
-import com.example.mlkit.core.presentation.component.MikCameraPreview
+import com.example.mlkit.core.presentation.component.MlkCameraPreview
 import com.example.mlkit.core.presentation.component.MlkTopAppBar
 import com.example.mlkit.feature.barcodescanner.presentation.analyzer.BarcodeScannerAnalyzer
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -110,7 +110,7 @@ private fun BarcodeScannerScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                MikCameraPreview(modifier = Modifier.fillMaxSize(),
+                MlkCameraPreview(modifier = Modifier.fillMaxSize(),
                     setUpDetector = { cameraController, context ->
                         cameraController.setImageAnalysisAnalyzer(
                             ContextCompat.getMainExecutor(context),

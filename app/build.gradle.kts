@@ -84,6 +84,7 @@ dependencies {
     implementation(libs.google.mlkit.objectDetection)
     implementation(libs.google.mlkit.objectDetectionCustom)
     implementation(libs.google.mlkit.barcodeScanner)
+    implementation(libs.google.mlkit.poseDetection)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

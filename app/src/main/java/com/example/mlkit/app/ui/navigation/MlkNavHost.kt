@@ -15,6 +15,8 @@ import com.example.mlkit.feature.facedetection.presentation.navigation.faceDetec
 import com.example.mlkit.feature.facedetection.presentation.navigation.navigateToFaceDetection
 import com.example.mlkit.feature.objectdetection.presentation.navigation.navigateToObjectDetection
 import com.example.mlkit.feature.objectdetection.presentation.navigation.objectDetectionScreen
+import com.example.mlkit.feature.posedetection.presentation.navigation.navigateToPoseDetection
+import com.example.mlkit.feature.posedetection.presentation.navigation.poseDetectionScreen
 import com.example.mlkit.feature.textrecognition.presentation.navigation.navigateToTextRecognition
 import com.example.mlkit.feature.textrecognition.presentation.navigation.textRecognitionScreen
 
@@ -36,6 +38,7 @@ fun MlkNavHost(
                 is PMLKitFeature.BarcodeScanner -> navController.navigateToBarcodeScanner()
                 is PMLKitFeature.FaceDetection -> navController.navigateToFaceDetection()
                 is PMLKitFeature.ObjectDetection -> navController.navigateToObjectDetection()
+                is PMLKitFeature.PoseDetection -> navController.navigateToPoseDetection()
             }
         })
 
@@ -44,5 +47,6 @@ fun MlkNavHost(
         faceDetectionScreen { navController.popBackStack() }
         objectDetectionScreen { navController.popBackStack() }
         barcodeScannerScreen { navController.popBackStack() }
+        poseDetectionScreen { navController.popBackStack() }
     }
 }

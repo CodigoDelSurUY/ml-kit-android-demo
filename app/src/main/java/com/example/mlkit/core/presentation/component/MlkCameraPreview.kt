@@ -26,7 +26,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.example.mlkit.R
 
 @Composable
-fun MikCameraPreview(
+fun MlkCameraPreview(
     modifier: Modifier,
     setUpDetector: (LifecycleCameraController, Context) -> Unit,
 ) {

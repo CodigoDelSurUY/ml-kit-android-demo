@@ -31,4 +31,10 @@
     <string name="feature_barcode_scanner_title">Barcode Scanner</string>
     <string name="feature_barcode_scanner_description">Scan and process barcodes. Supports most standard 1D and 2D formats.</string>
 
+    <string name="feature_pose_detection_title">Pose detection</string>
+    <string name="feature_pose_detection_description">Detect the position of the human body in real time.</string>
+    <string name="pose_detection_reps_counter">Reps: %d</string>
+    <string name="pose_detection_classification">Class: %s</string>
+    <string name="pose_detection_classification_none">None</string>
+
 </resources>

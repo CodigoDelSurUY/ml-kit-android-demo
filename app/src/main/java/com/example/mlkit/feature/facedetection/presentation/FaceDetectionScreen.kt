@@ -1,6 +1,6 @@
 package com.example.mlkit.feature.facedetection.presentation
 
-import androidx.camera.core.ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +36,7 @@ import com.example.mlkit.R
 import com.example.mlkit.app.ui.theme.MlkTheme
 import com.example.mlkit.app.ui.theme.Typography
 import com.example.mlkit.core.presentation.component.CameraPermissionRequester
-import com.example.mlkit.core.presentation.component.MikCameraPreview
+import com.example.mlkit.core.presentation.component.MlkCameraPreview
 import com.example.mlkit.core.presentation.component.MlkTopAppBar
 import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceDetection
@@ -45,10 +45,10 @@ import com.google.mlkit.vision.face.FaceDetectorOptions
 @Composable
 fun FaceDetectionRoute(
     modifier: Modifier = Modifier,
-    faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel(),
+    viewModel: FaceDetectionViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
-    val state by faceDetectionViewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     FaceDetectionScreen(
         modifier = modifier,
         detectedFaces = state.detectedFaces,
@@ -56,13 +56,13 @@ fun FaceDetectionRoute(
         showHat = state.showHat,
         isSmiling = state.isSmiling,
         onFacesDetected = { faces ->
-            faceDetectionViewModel.updateDetectedFaces(faces = faces)
+            viewModel.updateDetectedFaces(faces = faces)
         },
         onToggleBoundingBoxes = {
-            faceDetectionViewModel.toggleBoundingBoxes()
+            viewModel.toggleBoundingBoxes()
         },
         onToggleHat = {
-            faceDetectionViewModel.toggleHat()
+            viewModel.toggleHat()
         },
         onBackClick = onBackClick,
     )
@@ -92,7 +92,8 @@ private fun FaceDetectionScreen(
             modifier = Modifier.weight(1.0f)
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                MikCameraPreview(modifier = modifier.fillMaxSize(),
+                MlkCameraPreview(
+                    modifier = Modifier.fillMaxSize(),
                     setUpDetector = { cameraController, context ->
                         val realTimeOpts = FaceDetectorOptions.Builder()
                             .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
@@ -102,16 +103,17 @@ private fun FaceDetectionScreen(
                             .enableTracking().build()
 
                         val faceDetector = FaceDetection.getClient(realTimeOpts)
-                        cameraController.setImageAnalysisAnalyzer(ContextCompat.getMainExecutor(
-                            context
-                        ), MlKitAnalyzer(
-                            listOf(faceDetector),
-                            COORDINATE_SYSTEM_VIEW_REFERENCED,
-                            ContextCompat.getMainExecutor(context)
-                        ) { result: MlKitAnalyzer.Result? ->
-                            val faces = result?.getValue(faceDetector)
-                            currentOnFacesDetected(faces.orEmpty())
-                        })
+                        val executor = ContextCompat.getMainExecutor(context)
+                        cameraController.setImageAnalysisAnalyzer(
+                            executor,
+                            MlKitAnalyzer(
+                                listOf(faceDetector),
+                                ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED,
+                                executor
+                            ) { result: MlKitAnalyzer.Result? ->
+                                val faces = result?.getValue(faceDetector)
+                                currentOnFacesDetected(faces.orEmpty())
+                            })
                     })
 
                 if (showBoundingBoxes) {
@@ -233,7 +235,8 @@ private fun HatOverlay(
 @Composable
 private fun FaceDetectionScreenPreview() {
     MlkTheme {
-        FaceDetectionScreen(modifier = Modifier.fillMaxSize(),
+        FaceDetectionScreen(
+            modifier = Modifier.fillMaxSize(),
             detectedFaces = listOf(),
             showBoundingBoxes = true,
             showHat = true,

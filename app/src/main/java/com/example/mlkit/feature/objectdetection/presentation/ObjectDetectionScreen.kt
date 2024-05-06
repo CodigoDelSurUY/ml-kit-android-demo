@@ -32,7 +32,7 @@ import com.example.mlkit.R
 import com.example.mlkit.app.ui.theme.MlkTheme
 import com.example.mlkit.app.ui.theme.Typography
 import com.example.mlkit.core.presentation.component.CameraPermissionRequester
-import com.example.mlkit.core.presentation.component.MikCameraPreview
+import com.example.mlkit.core.presentation.component.MlkCameraPreview
 import com.example.mlkit.core.presentation.component.MlkTopAppBar
 import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.objects.DetectedObject
@@ -81,7 +81,8 @@ private fun ObjectDetectionScreen(
             modifier = Modifier.weight(1.0f)
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                MikCameraPreview(modifier = modifier.fillMaxSize(),
+                MlkCameraPreview(
+                    modifier = Modifier.fillMaxSize(),
                     setUpDetector = { cameraController, context ->
 //                        val options = ObjectDetectorOptions.Builder()
 //                            .setDetectorMode(ObjectDetectorOptions.STREAM_MODE)
@@ -91,7 +92,7 @@ private fun ObjectDetectionScreen(
 //                        val objectDetector = ObjectDetection.getClient(options)
 
                         val localModel = LocalModel.Builder()
-                            .setAssetFilePath("efficientnet.tflite")
+                            .setAssetFilePath("object/efficientnet.tflite")
                             .build()
 
                         val customObjectDetectorOptions =
@@ -104,17 +105,18 @@ private fun ObjectDetectionScreen(
                         val objectDetector =
                             ObjectDetection.getClient(customObjectDetectorOptions)
 
+                        val executor = ContextCompat.getMainExecutor(context)
                         cameraController.setImageAnalysisAnalyzer(
-                            ContextCompat.getMainExecutor(
-                                context
-                            ), MlKitAnalyzer(
+                            executor,
+                            MlKitAnalyzer(
                                 listOf(objectDetector),
                                 ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED,
-                                ContextCompat.getMainExecutor(context)
+                                executor
                             ) { result: MlKitAnalyzer.Result? ->
                                 val objects = result?.getValue(objectDetector)
                                 currentOnObjectDetected(objects.orEmpty())
-                            })
+                            }
+                        )
                     }
                 )
 
