@@ -1,0 +1,143 @@
+package com.example.mlkit.feature.translation.presentation
+
+import android.widget.Space
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.mlkit.R
+import com.example.mlkit.app.ui.theme.MlkTheme
+import com.example.mlkit.app.ui.theme.Typography
+import com.example.mlkit.core.presentation.component.LoadingButton
+import com.example.mlkit.core.presentation.component.MlkTopAppBar
+import com.example.mlkit.core.presentation.component.ShowSnackbarEffect
+import com.example.mlkit.core.presentation.model.PSnackbar
+
+@Composable
+fun TranslationRoute(
+    modifier: Modifier = Modifier,
+    viewModel: TranslationViewModel = hiltViewModel(),
+    onBackClick: () -> Unit
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    state.translationError?.let {
+        ShowSnackbarEffect(snackbar = PSnackbar.Text(it)) {
+            viewModel.hideTranslationError()
+        }
+    }
+
+    TranslationScreen(
+        modifier = modifier,
+        inputText = state.inputText,
+        outputText = state.outputText,
+        isLoading = state.isLoading,
+        onInputTextChanged = { viewModel.updateInputText(text = it) },
+        onTranslate = { viewModel.translate() },
+        onBackClick = onBackClick
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TranslationScreen(
+    modifier: Modifier,
+    inputText: String,
+    outputText: String,
+    isLoading: Boolean,
+    onInputTextChanged: (String) -> Unit,
+    onTranslate: () -> Unit,
+    onBackClick: () -> Unit
+) {
+    val focusManager = LocalFocusManager.current
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        MlkTopAppBar(
+            titleRes = R.string.feature_translation_title,
+            onNavigationClick = onBackClick
+        )
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
+                .weight(1.0f)
+                .verticalScroll(rememberScrollState())
+                .padding(all = 16.dp)
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.translation_instructions),
+                style = Typography.bodyMedium
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextField(
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+                value = inputText,
+                onValueChange = onInputTextChanged,
+                label = { Text(text = stringResource(id = R.string.translation_input_label)) }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            LoadingButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.translation_translate_button),
+                enabled = inputText.isNotBlank(),
+                loading = isLoading,
+                onClick = {
+                    focusManager.clearFocus()
+                    onTranslate()
+                }
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = outputText,
+                style = Typography.displaySmall
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun TranslationScreenPreview() {
+    MlkTheme {
+        TranslationScreen(
+            modifier = Modifier.fillMaxSize(),
+            inputText = "¡Hola!, ¿Cómo estás?",
+            outputText = "Hi, how are you?",
+            isLoading = false,
+            onInputTextChanged = {},
+            onTranslate = {},
+            onBackClick = {}
+        )
+    }
+}

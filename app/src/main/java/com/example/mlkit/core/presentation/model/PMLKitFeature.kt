@@ -51,6 +51,12 @@ sealed class PMLKitFeature(
         descriptionRes = R.string.feature_selfie_segmentation_description
     )
 
+    data object Translation: PMLKitFeature(
+        imageRes = R.drawable.card_translation,
+        titleRes = R.string.feature_translation_title,
+        descriptionRes = R.string.feature_translation_description
+    )
+
     companion object {
         val all = listOf(
             TextRecognition,
@@ -59,7 +65,8 @@ sealed class PMLKitFeature(
             SelfieSegmentation,
             ObjectDetection,
             PoseDetection,
-            DocumentScanner
+            DocumentScanner,
+            Translation
         )
     }
 }

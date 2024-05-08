@@ -21,6 +21,8 @@ import com.example.mlkit.feature.selfiesegmentation.presentation.navigation.navi
 import com.example.mlkit.feature.selfiesegmentation.presentation.navigation.selfieSegmentationScreen
 import com.example.mlkit.feature.textrecognition.presentation.navigation.navigateToTextRecognition
 import com.example.mlkit.feature.textrecognition.presentation.navigation.textRecognitionScreen
+import com.example.mlkit.feature.translation.presentation.navigation.navigateToTranslation
+import com.example.mlkit.feature.translation.presentation.navigation.translationScreen
 
 @Composable
 fun MlkNavHost(
@@ -42,6 +44,7 @@ fun MlkNavHost(
                 is PMLKitFeature.SelfieSegmentation -> navController.navigateToSelfieSegmentation()
                 is PMLKitFeature.ObjectDetection -> navController.navigateToObjectDetection()
                 is PMLKitFeature.PoseDetection -> navController.navigateToPoseDetection()
+                is PMLKitFeature.Translation -> navController.navigateToTranslation()
             }
         })
 
@@ -52,5 +55,6 @@ fun MlkNavHost(
         barcodeScannerScreen { navController.popBackStack() }
         poseDetectionScreen { navController.popBackStack() }
         selfieSegmentationScreen { navController.popBackStack() }
+        translationScreen { navController.popBackStack() }
     }
 }

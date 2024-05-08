@@ -45,8 +45,13 @@
 
     <string name="feature_selfie_segmentation_title">Selfie Segmentation</string>
     <string name="feature_selfie_segmentation_description">Selfie Segmentation</string>
-
     <string name="selfie_segmentation_remove_background">Remove background</string>
     <string name="selfie_segmentation_reset">Reset</string>
+
+    <string name="feature_translation_title">Translation</string>
+    <string name="feature_translation_description">Translate text between 58 languages, entirely on device.</string>
+    <string name="translation_instructions">Type any text to translate it to english. The input language will be automatically identified and used for the translation. \nThe first input from a specific language might take longer to process since the translation model for that language needs to be downloaded.</string>
+    <string name="translation_input_label">Input</string>
+    <string name="translation_translate_button">Translate</string>
 
 </resources>
