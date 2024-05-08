@@ -1,11 +1,17 @@
 <resources>
     <string name="app_name">ML Kit Demo</string>
     <string name="back">Back</string>
+    <string name="close">Close</string>
 
     <string name="error_default">Something went wrong, please try again later.</string>
+
     <string name="camera_permission_requester_title">Camera Permission Required</string>
     <string name="camera_permission_requester_message">This feature needs to use your camera in order to work, so you should grant us permission to do so.</string>
     <string name="camera_permission_requester_button">Grant permission</string>
+
+    <string name="camera_preview_switch_camera">Switch Camera</string>
+    <string name="camera_preview_capture_photo">Capture Photo</string>
+
     <string name="feature_document_scanner_title">Document Scanner</string>
     <string name="feature_document_scanner_description">Digitize physical documents from pictures.</string>
 
@@ -36,5 +42,11 @@
     <string name="pose_detection_reps_counter">Reps: %d</string>
     <string name="pose_detection_classification">Class: %s</string>
     <string name="pose_detection_classification_none">None</string>
+
+    <string name="feature_selfie_segmentation_title">Selfie Segmentation</string>
+    <string name="feature_selfie_segmentation_description">Selfie Segmentation</string>
+
+    <string name="selfie_segmentation_remove_background">Remove background</string>
+    <string name="selfie_segmentation_reset">Reset</string>
 
 </resources>

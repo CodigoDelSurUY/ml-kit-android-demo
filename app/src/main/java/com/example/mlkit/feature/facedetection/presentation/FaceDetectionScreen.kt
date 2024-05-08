@@ -114,19 +114,20 @@ private fun FaceDetectionScreen(
                                 val faces = result?.getValue(faceDetector)
                                 currentOnFacesDetected(faces.orEmpty())
                             })
-                    })
-
-                if (showBoundingBoxes) {
-                    BoundingBoxesOverlay(
-                        modifier = Modifier.fillMaxSize(),
-                        faces = detectedFaces
-                    )
-                }
-                if (showHat) {
-                    HatOverlay(
-                        modifier = Modifier.fillMaxSize(),
-                        faces = detectedFaces
-                    )
+                    }
+                ) {
+                    if (showBoundingBoxes) {
+                        BoundingBoxesOverlay(
+                            modifier = Modifier.fillMaxSize(),
+                            faces = detectedFaces
+                        )
+                    }
+                    if (showHat) {
+                        HatOverlay(
+                            modifier = Modifier.fillMaxSize(),
+                            faces = detectedFaces
+                        )
+                    }
                 }
 
                 Column(

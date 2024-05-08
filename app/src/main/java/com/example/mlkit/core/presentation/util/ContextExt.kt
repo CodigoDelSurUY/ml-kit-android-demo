@@ -1,4 +1,4 @@
-package com.example.mlkit.core.util
+package com.example.mlkit.core.presentation.util
 
 import android.app.Activity
 import android.content.Context

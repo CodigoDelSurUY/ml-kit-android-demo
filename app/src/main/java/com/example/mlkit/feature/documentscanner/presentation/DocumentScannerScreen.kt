@@ -28,10 +28,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.mlkit.R
 import com.example.mlkit.app.ui.theme.MlkTheme
-import com.example.mlkit.core.model.PSnackbar
+import com.example.mlkit.core.presentation.model.PSnackbar
 import com.example.mlkit.core.presentation.component.MlkTopAppBar
 import com.example.mlkit.core.presentation.component.ShowSnackbarEffect
-import com.example.mlkit.core.util.findActivity
+import com.example.mlkit.core.presentation.util.findActivity
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_JPEG
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_PDF

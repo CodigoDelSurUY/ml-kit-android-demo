@@ -7,7 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.res.stringResource
 import com.example.mlkit.R
-import com.example.mlkit.core.model.PSnackbar
+import com.example.mlkit.core.presentation.model.PSnackbar
 
 val LocalSnackBarHostState = compositionLocalOf<SnackbarHostState> {
     error("No SnackBarHostState provided")

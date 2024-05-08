@@ -111,13 +111,13 @@ private fun PoseDetectionScreen(
                             }
                         )
                     }
-                )
-
-                if (detectedPose != null) {
-                    PoseOverlay(
-                        modifier = Modifier.fillMaxSize(),
-                        pose = detectedPose,
-                    )
+                ) {
+                    if (detectedPose != null) {
+                        PoseOverlay(
+                            modifier = Modifier.fillMaxSize(),
+                            pose = detectedPose,
+                        )
+                    }
                 }
 
                 PoseLegend(

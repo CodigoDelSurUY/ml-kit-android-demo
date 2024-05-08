@@ -85,6 +85,7 @@ dependencies {
     implementation(libs.google.mlkit.objectDetectionCustom)
     implementation(libs.google.mlkit.barcodeScanner)
     implementation(libs.google.mlkit.poseDetection)
+    implementation(libs.google.mlkit.selfieSegmentation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

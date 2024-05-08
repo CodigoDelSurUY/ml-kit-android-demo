@@ -3,7 +3,7 @@ package com.example.mlkit.feature.explorer.presentation.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.mlkit.feature.explorer.presentation.ExplorerRoute
-import com.example.mlkit.core.model.PMLKitFeature
+import com.example.mlkit.core.presentation.model.PMLKitFeature
 
 const val EXPLORER_ROUTE = "explorer_route"
 

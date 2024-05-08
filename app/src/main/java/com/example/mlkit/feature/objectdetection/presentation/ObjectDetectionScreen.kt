@@ -92,12 +92,13 @@ private fun ObjectDetectionScreen(
 //                        val objectDetector = ObjectDetection.getClient(options)
 
                         val localModel = LocalModel.Builder()
-                            .setAssetFilePath("object/efficientnet.tflite")
+                            .setAssetFilePath("object/mario_android_cup.tflite")
                             .build()
 
                         val customObjectDetectorOptions =
                             CustomObjectDetectorOptions.Builder(localModel)
                                 .setDetectorMode(CustomObjectDetectorOptions.STREAM_MODE)
+                                .setClassificationConfidenceThreshold(0.9f)
                                 .enableMultipleObjects()
                                 .enableClassification()
                                 .build()
@@ -118,13 +119,13 @@ private fun ObjectDetectionScreen(
                             }
                         )
                     }
-                )
-
-                BoundingBoxesOverlay(
-                    modifier = Modifier.fillMaxSize(),
-                    hideUnlabeled = hideUnlabeled,
-                    objects = detectedObjects
-                )
+                ) {
+                    BoundingBoxesOverlay(
+                        modifier = Modifier.fillMaxSize(),
+                        hideUnlabeled = hideUnlabeled,
+                        objects = detectedObjects
+                    )
+                }
 
                 Button(
                     modifier = Modifier

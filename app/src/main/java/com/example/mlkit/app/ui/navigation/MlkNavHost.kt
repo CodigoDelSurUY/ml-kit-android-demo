@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.example.mlkit.core.model.PMLKitFeature
+import com.example.mlkit.core.presentation.model.PMLKitFeature
 import com.example.mlkit.feature.barcodescanner.presentation.navigation.barcodeScannerScreen
 import com.example.mlkit.feature.barcodescanner.presentation.navigation.navigateToBarcodeScanner
 import com.example.mlkit.feature.documentscanner.presentation.navigation.documentScannerScreen
@@ -17,6 +17,8 @@ import com.example.mlkit.feature.objectdetection.presentation.navigation.navigat
 import com.example.mlkit.feature.objectdetection.presentation.navigation.objectDetectionScreen
 import com.example.mlkit.feature.posedetection.presentation.navigation.navigateToPoseDetection
 import com.example.mlkit.feature.posedetection.presentation.navigation.poseDetectionScreen
+import com.example.mlkit.feature.selfiesegmentation.presentation.navigation.navigateToSelfieSegmentation
+import com.example.mlkit.feature.selfiesegmentation.presentation.navigation.selfieSegmentationScreen
 import com.example.mlkit.feature.textrecognition.presentation.navigation.navigateToTextRecognition
 import com.example.mlkit.feature.textrecognition.presentation.navigation.textRecognitionScreen
 
@@ -37,6 +39,7 @@ fun MlkNavHost(
                 is PMLKitFeature.TextRecognition -> navController.navigateToTextRecognition()
                 is PMLKitFeature.BarcodeScanner -> navController.navigateToBarcodeScanner()
                 is PMLKitFeature.FaceDetection -> navController.navigateToFaceDetection()
+                is PMLKitFeature.SelfieSegmentation -> navController.navigateToSelfieSegmentation()
                 is PMLKitFeature.ObjectDetection -> navController.navigateToObjectDetection()
                 is PMLKitFeature.PoseDetection -> navController.navigateToPoseDetection()
             }
@@ -48,5 +51,6 @@ fun MlkNavHost(
         objectDetectionScreen { navController.popBackStack() }
         barcodeScannerScreen { navController.popBackStack() }
         poseDetectionScreen { navController.popBackStack() }
+        selfieSegmentationScreen { navController.popBackStack() }
     }
 }

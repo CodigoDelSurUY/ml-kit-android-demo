@@ -1,4 +1,4 @@
-package com.example.mlkit.core.model
+package com.example.mlkit.core.presentation.model
 
 import androidx.annotation.StringRes
 

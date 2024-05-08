@@ -1,4 +1,4 @@
-package com.example.mlkit.core.model
+package com.example.mlkit.core.presentation.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -45,11 +45,18 @@ sealed class PMLKitFeature(
         descriptionRes = R.string.feature_pose_detection_description
     )
 
+    data object SelfieSegmentation : PMLKitFeature(
+        imageRes = R.drawable.card_selfie_segmentation,
+        titleRes = R.string.feature_selfie_segmentation_title,
+        descriptionRes = R.string.feature_selfie_segmentation_description
+    )
+
     companion object {
         val all = listOf(
             TextRecognition,
             BarcodeScanner,
             FaceDetection,
+            SelfieSegmentation,
             ObjectDetection,
             PoseDetection,
             DocumentScanner
