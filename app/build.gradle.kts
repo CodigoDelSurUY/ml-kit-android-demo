@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mlkit"
+    namespace = "com.codigodelsur.mlkit"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.mlkit"
+        applicationId = "com.codigodelsur.mlkit"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
