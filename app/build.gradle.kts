@@ -1,4 +1,4 @@
-import com.android.build.api.dsl.AaptOptions
+
 
 plugins {
     kotlin("kapt")
@@ -88,6 +88,7 @@ dependencies {
     implementation(libs.google.mlkit.selfieSegmentation)
     implementation(libs.google.mlkit.languageIdentification)
     implementation(libs.google.mlkit.translation)
+    implementation(libs.google.mlkit.smartReply)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

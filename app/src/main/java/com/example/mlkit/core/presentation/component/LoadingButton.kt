@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.example.mlkit.app.ui.theme.MlkTheme
+import com.example.mlkit.core.presentation.theme.MlkTheme
 
 @Composable
 fun LoadingButton(

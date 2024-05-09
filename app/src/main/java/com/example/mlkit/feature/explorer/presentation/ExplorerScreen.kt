@@ -23,8 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.mlkit.app.ui.theme.MlkTheme
-import com.example.mlkit.app.ui.theme.Typography
+import com.example.mlkit.core.presentation.theme.MlkTheme
+import com.example.mlkit.core.presentation.theme.Typography
 import com.example.mlkit.core.presentation.model.PMLKitFeature
 
 @Composable

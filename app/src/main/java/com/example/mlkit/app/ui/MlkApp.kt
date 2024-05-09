@@ -12,7 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.mlkit.app.ui.navigation.MlkNavHost
-import com.example.mlkit.app.ui.theme.MlkTheme
+import com.example.mlkit.core.presentation.theme.MlkTheme
 import com.example.mlkit.core.presentation.component.LocalSnackBarHostState
 
 @Composable

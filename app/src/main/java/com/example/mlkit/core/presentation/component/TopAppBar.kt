@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mlkit.R
-import com.example.mlkit.app.ui.theme.MlkTheme
+import com.example.mlkit.core.presentation.theme.MlkTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

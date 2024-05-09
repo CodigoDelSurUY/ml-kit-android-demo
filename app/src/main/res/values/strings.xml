@@ -54,4 +54,9 @@
     <string name="translation_input_label">Input</string>
     <string name="translation_translate_button">Translate</string>
 
+    <string name="feature_smart_reply_title">Smart Reply</string>
+    <string name="feature_smart_reply_description">Generate reply suggestions in text conversations.</string>
+
+    <string name="smart_reply_send_button">Send</string>
+
 </resources>

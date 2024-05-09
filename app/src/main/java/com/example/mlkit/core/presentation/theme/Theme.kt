@@ -1,4 +1,4 @@
-package com.example.mlkit.app.ui.theme
+package com.example.mlkit.core.presentation.theme
 
 import android.app.Activity
 import android.os.Build

@@ -21,8 +21,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mlkit.R
-import com.example.mlkit.app.ui.theme.MlkTheme
-import com.example.mlkit.app.ui.theme.Typography
+import com.example.mlkit.core.presentation.theme.MlkTheme
+import com.example.mlkit.core.presentation.theme.Typography
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState

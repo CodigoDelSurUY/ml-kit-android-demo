@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mlkit.R
-import com.example.mlkit.app.ui.theme.MlkTheme
-import com.example.mlkit.app.ui.theme.Typography
+import com.example.mlkit.core.presentation.theme.MlkTheme
+import com.example.mlkit.core.presentation.theme.Typography
 import com.example.mlkit.core.presentation.component.LoadingButton
 import com.example.mlkit.core.presentation.component.MlkTopAppBar
 import com.example.mlkit.core.presentation.component.ShowSnackbarEffect

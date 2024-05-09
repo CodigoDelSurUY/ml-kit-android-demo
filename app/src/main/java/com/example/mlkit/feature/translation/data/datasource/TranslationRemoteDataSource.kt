@@ -23,8 +23,8 @@ class TranslationRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun identifyLanguage(text: String): String = suspendCoroutine { continuation ->
         languageIdentifier.identifyLanguage(text)
-            .addOnFailureListener { continuation.resumeWithException(it) }
-            .addOnSuccessListener { continuation.resume(it) }
+            .addOnFailureListener(continuation::resumeWithException)
+            .addOnSuccessListener(continuation::resume)
     }
 
     override suspend fun translate(
@@ -52,8 +52,8 @@ class TranslationRemoteDataSourceImpl @Inject constructor(
             }
             .addOnSuccessListener {
                 translator.translate(text)
-                    .addOnFailureListener { continuation.resumeWithException(it) }
-                    .addOnSuccessListener { continuation.resume(it) }
+                    .addOnFailureListener(continuation::resumeWithException)
+                    .addOnSuccessListener(continuation::resume)
                     .addOnCompleteListener { translator.close() }
             }
 

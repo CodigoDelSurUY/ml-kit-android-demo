@@ -19,6 +19,8 @@ import com.example.mlkit.feature.posedetection.presentation.navigation.navigateT
 import com.example.mlkit.feature.posedetection.presentation.navigation.poseDetectionScreen
 import com.example.mlkit.feature.selfiesegmentation.presentation.navigation.navigateToSelfieSegmentation
 import com.example.mlkit.feature.selfiesegmentation.presentation.navigation.selfieSegmentationScreen
+import com.example.mlkit.feature.smartreply.presentation.navigation.navigateToSmartReply
+import com.example.mlkit.feature.smartreply.presentation.navigation.smartReplyScreen
 import com.example.mlkit.feature.textrecognition.presentation.navigation.navigateToTextRecognition
 import com.example.mlkit.feature.textrecognition.presentation.navigation.textRecognitionScreen
 import com.example.mlkit.feature.translation.presentation.navigation.navigateToTranslation
@@ -45,6 +47,7 @@ fun MlkNavHost(
                 is PMLKitFeature.ObjectDetection -> navController.navigateToObjectDetection()
                 is PMLKitFeature.PoseDetection -> navController.navigateToPoseDetection()
                 is PMLKitFeature.Translation -> navController.navigateToTranslation()
+                is PMLKitFeature.SmartReply -> navController.navigateToSmartReply()
             }
         })
 
@@ -56,5 +59,6 @@ fun MlkNavHost(
         poseDetectionScreen { navController.popBackStack() }
         selfieSegmentationScreen { navController.popBackStack() }
         translationScreen { navController.popBackStack() }
+        smartReplyScreen { navController.popBackStack() }
     }
 }

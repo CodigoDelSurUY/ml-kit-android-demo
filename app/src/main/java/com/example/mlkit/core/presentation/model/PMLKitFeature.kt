@@ -57,6 +57,12 @@ sealed class PMLKitFeature(
         descriptionRes = R.string.feature_translation_description
     )
 
+    data object SmartReply: PMLKitFeature(
+        imageRes = R.drawable.card_smart_reply,
+        titleRes = R.string.feature_smart_reply_title,
+        descriptionRes = R.string.feature_smart_reply_description
+    )
+
     companion object {
         val all = listOf(
             TextRecognition,
@@ -66,7 +72,8 @@ sealed class PMLKitFeature(
             ObjectDetection,
             PoseDetection,
             DocumentScanner,
-            Translation
+            Translation,
+            SmartReply
         )
     }
 }
