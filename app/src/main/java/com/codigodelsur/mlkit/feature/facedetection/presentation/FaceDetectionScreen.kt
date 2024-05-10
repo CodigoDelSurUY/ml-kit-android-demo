@@ -1,8 +1,8 @@
 package com.codigodelsur.mlkit.feature.facedetection.presentation
 
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.mlkit.vision.MlKitAnalyzer
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,20 +14,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.FilterQuality
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.toComposeRect
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,6 +32,8 @@ import com.codigodelsur.mlkit.core.presentation.theme.Typography
 import com.codigodelsur.mlkit.core.presentation.component.CameraPermissionRequester
 import com.codigodelsur.mlkit.core.presentation.component.MlkCameraPreview
 import com.codigodelsur.mlkit.core.presentation.component.MlkTopAppBar
+import com.codigodelsur.mlkit.feature.facedetection.presentation.component.FaceBoundingBoxesOverlay
+import com.codigodelsur.mlkit.feature.facedetection.presentation.component.AccessoriesOverlay
 import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
@@ -53,7 +49,7 @@ fun FaceDetectionRoute(
         modifier = modifier,
         detectedFaces = state.detectedFaces,
         showBoundingBoxes = state.showBoundingBoxes,
-        showHat = state.showHat,
+        showAccessories = state.showHat,
         isSmiling = state.isSmiling,
         onFacesDetected = { faces ->
             viewModel.updateDetectedFaces(faces = faces)
@@ -75,7 +71,7 @@ private fun FaceDetectionScreen(
     modifier: Modifier,
     detectedFaces: List<Face>,
     showBoundingBoxes: Boolean,
-    showHat: Boolean,
+    showAccessories: Boolean,
     isSmiling: Boolean,
     onFacesDetected: (List<Face>) -> Unit,
     onToggleBoundingBoxes: () -> Unit,
@@ -83,6 +79,7 @@ private fun FaceDetectionScreen(
     onBackClick: () -> Unit
 ) {
     val currentOnFacesDetected by rememberUpdatedState(onFacesDetected)
+    var cameraSelector by remember { mutableStateOf(CameraSelector.DEFAULT_FRONT_CAMERA) }
     Column(modifier = modifier.fillMaxSize()) {
         MlkTopAppBar(
             titleRes = R.string.feature_face_detection_title,
@@ -94,6 +91,8 @@ private fun FaceDetectionScreen(
             Box(modifier = Modifier.fillMaxSize()) {
                 MlkCameraPreview(
                     modifier = Modifier.fillMaxSize(),
+                    cameraSelector = cameraSelector,
+                    onFlipCamera = { cameraSelector = it },
                     setUpDetector = { cameraController, context ->
                         val realTimeOpts = FaceDetectorOptions.Builder()
                             .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
@@ -117,14 +116,15 @@ private fun FaceDetectionScreen(
                     }
                 ) {
                     if (showBoundingBoxes) {
-                        BoundingBoxesOverlay(
+                        FaceBoundingBoxesOverlay(
                             modifier = Modifier.fillMaxSize(),
                             faces = detectedFaces
                         )
                     }
-                    if (showHat) {
-                        HatOverlay(
+                    if (showAccessories) {
+                        AccessoriesOverlay(
                             modifier = Modifier.fillMaxSize(),
+                            mirror = cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA,
                             faces = detectedFaces
                         )
                     }
@@ -151,10 +151,10 @@ private fun FaceDetectionScreen(
                     Button(onClick = onToggleHat) {
                         Text(
                             text = stringResource(
-                                id = if (showHat) {
-                                    R.string.face_detection_hide_hat
+                                id = if (showAccessories) {
+                                    R.string.face_detection_hide_accessories
                                 } else {
-                                    R.string.face_detection_show_hat
+                                    R.string.face_detection_show_accessories
                                 }
                             )
                         )
@@ -183,55 +183,6 @@ private fun FaceDetectionScreen(
     }
 }
 
-@Composable
-private fun BoundingBoxesOverlay(
-    modifier: Modifier,
-    faces: List<Face>
-) {
-    Canvas(modifier = modifier.clipToBounds()) {
-        for (face in faces) {
-            // Draw the rectangle
-            val composeRect = face.boundingBox.toComposeRect()
-            drawRect(
-                color = Color.Blue,
-                topLeft = composeRect.topLeft,
-                size = composeRect.size,
-                style = Stroke(width = 3.dp.toPx())
-            )
-        }
-    }
-}
-
-@Composable
-private fun HatOverlay(
-    modifier: Modifier, faces: List<Face>
-) {
-    val hatBitmap = ImageBitmap.imageResource(id = R.drawable.cowboy_hat)
-    val yPositionAdjustment = 1.2 // Just a hardcoded adjustment based on the image padding
-    Canvas(modifier = modifier.clipToBounds()) {
-        for (face in faces) {
-            // Draw the rectangle
-            val faceBox = face.boundingBox.toComposeRect()
-            val faceRect = faceBox.width
-            val hatWidth = hatBitmap.width
-            val scale = faceRect / hatWidth
-            val hatX = faceBox.left
-            val hatY = faceBox.top * yPositionAdjustment - hatBitmap.height * scale
-            // Draw the hat image scaled to the width of the face
-            drawImage(
-                image = hatBitmap,
-                srcOffset = IntOffset.Zero,
-                srcSize = IntSize(hatBitmap.width, hatBitmap.height),
-                dstOffset = IntOffset(hatX.toInt(), hatY.toInt()),
-                dstSize = IntSize(
-                    (hatBitmap.width * scale).toInt(), (hatBitmap.height * scale).toInt()
-                ),
-                filterQuality = FilterQuality.High
-            )
-        }
-    }
-}
-
 @Preview
 @Composable
 private fun FaceDetectionScreenPreview() {
@@ -240,7 +191,7 @@ private fun FaceDetectionScreenPreview() {
             modifier = Modifier.fillMaxSize(),
             detectedFaces = listOf(),
             showBoundingBoxes = true,
-            showHat = true,
+            showAccessories = true,
             isSmiling = true,
             onFacesDetected = { _ -> },
             onToggleBoundingBoxes = {},

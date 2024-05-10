@@ -14,20 +14,20 @@
 
     <string name="feature_document_scanner_title">Document Scanner</string>
     <string name="feature_document_scanner_description">Digitize physical documents from pictures.</string>
-
-    <string name="feature_text_recognition_title">Text Recognition</string>
-    <string name="feature_text_recognition_description">Recognize and extract text from images.</string>
-
+    <string name="document_scanner_instructions">Scan a document to create a PDF and store it in your device. The scanner offers AI- based editing functionalities to crop, apply filters, remove shadows, clean stains, and seamlessly send digitized files back to your app.</string>
     <string name="document_scanner_scan_document_button">Scan Document</string>
     <string name="document_scanner_save_document_button">Save Document</string>
     <string name="document_scanner_saved_message">Document Saved</string>
+
+    <string name="feature_text_recognition_title">Text Recognition</string>
+    <string name="feature_text_recognition_description">Recognize and extract text from images.</string>
 
     <string name="feature_face_detection_title">Face detection</string>
     <string name="feature_face_detection_description">Detect faces and facial landmarks.</string>
     <string name="face_detection_show_bounding_boxes">Show bounding boxes</string>
     <string name="face_detection_hide_bounding_boxes">Hide bounding boxes</string>
-    <string name="face_detection_show_hat">Show hat</string>
-    <string name="face_detection_hide_hat">Hide hat</string>
+    <string name="face_detection_show_accessories">Show accessories</string>
+    <string name="face_detection_hide_accessories">Hide accessories</string>
 
     <string name="feature_object_detection_title">Object Detection</string>
     <string name="feature_object_detection_description">Localize and track in real time one or more objects in the live camera feed.</string>

@@ -2,7 +2,6 @@ package com.codigodelsur.mlkit.feature.objectdetection.presentation
 
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.mlkit.vision.MlKitAnalyzer
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,30 +14,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.toComposeRect
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.drawText
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.codigodelsur.mlkit.R
-import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
-import com.codigodelsur.mlkit.core.presentation.theme.Typography
 import com.codigodelsur.mlkit.core.presentation.component.CameraPermissionRequester
 import com.codigodelsur.mlkit.core.presentation.component.MlkCameraPreview
 import com.codigodelsur.mlkit.core.presentation.component.MlkTopAppBar
+import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
+import com.codigodelsur.mlkit.feature.objectdetection.presentation.component.ObjectBoundingBoxesOverlay
 import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.objects.DetectedObject
 import com.google.mlkit.vision.objects.ObjectDetection
 import com.google.mlkit.vision.objects.custom.CustomObjectDetectorOptions
-import kotlin.random.Random
 
 @Composable
 fun ObjectDetectionRoute(
@@ -84,6 +75,7 @@ private fun ObjectDetectionScreen(
                 MlkCameraPreview(
                     modifier = Modifier.fillMaxSize(),
                     setUpDetector = { cameraController, context ->
+                        // Default object detector
 //                        val options = ObjectDetectorOptions.Builder()
 //                            .setDetectorMode(ObjectDetectorOptions.STREAM_MODE)
 //                            .enableMultipleObjects()
@@ -120,7 +112,7 @@ private fun ObjectDetectionScreen(
                         )
                     }
                 ) {
-                    BoundingBoxesOverlay(
+                    ObjectBoundingBoxesOverlay(
                         modifier = Modifier.fillMaxSize(),
                         hideUnlabeled = hideUnlabeled,
                         objects = detectedObjects
@@ -146,58 +138,6 @@ private fun ObjectDetectionScreen(
             }
         }
     }
-}
-
-@Composable
-private fun BoundingBoxesOverlay(
-    modifier: Modifier,
-    hideUnlabeled: Boolean,
-    objects: List<DetectedObject>
-) {
-    val textMeasurer = rememberTextMeasurer()
-    Canvas(modifier = modifier.clipToBounds()) {
-        for (detectedObject in objects) {
-            val label = detectedObject.labels.maxByOrNull { it.confidence }
-
-            val color = getColorFromId(detectedObject.trackingId ?: 1)
-            // Draw the rectangle
-            val boxRect = detectedObject.boundingBox.toComposeRect()
-            if (label != null || !hideUnlabeled) {
-                drawRect(
-                    color = color,
-                    topLeft = boxRect.topLeft,
-                    size = boxRect.size,
-                    style = Stroke(width = 3.dp.toPx())
-                )
-            }
-            if (label != null) {
-                val legend = "${label.text} - ${"%.2f".format(label.confidence)}"
-                val legendStyle = Typography.labelMedium.copy(color = color)
-
-                val measure = textMeasurer.measure(
-                    text = legend,
-                    style = legendStyle
-                )
-                drawText(
-                    textMeasurer = textMeasurer,
-                    text = legend,
-                    style = legendStyle,
-                    topLeft = Offset(
-                        x = boxRect.left,
-                        y = boxRect.top - measure.getBoundingBox(0).height
-                    )
-                )
-            }
-        }
-    }
-}
-
-private fun getColorFromId(trackingId: Int): Color {
-    val random = Random(trackingId.hashCode())
-    val r = random.nextInt(256)
-    val g = random.nextInt(256)
-    val b = random.nextInt(256)
-    return Color(r, g, b)
 }
 
 @Preview

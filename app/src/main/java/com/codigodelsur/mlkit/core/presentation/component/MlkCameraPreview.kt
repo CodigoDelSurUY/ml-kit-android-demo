@@ -40,10 +40,9 @@ import com.codigodelsur.mlkit.core.presentation.util.rotateBitmap
 @Composable
 fun MlkCameraPreview(
     modifier: Modifier,
-    isFlipCameraEnabled: Boolean = true,
-    defaultSelector: CameraSelector = DEFAULT_FRONT_CAMERA,
-    isCapturePhotoEnabled: Boolean = false,
-    onPhotoCaptured: ((Bitmap) -> Unit)? = null,
+    cameraSelector: CameraSelector = DEFAULT_BACK_CAMERA,
+    onPhotoCapture: ((Bitmap) -> Unit)? = null,
+    onFlipCamera: ((CameraSelector) -> Unit)? = null,
     setUpDetector: (LifecycleCameraController, Context) -> Unit,
     overlays: @Composable BoxScope.() -> Unit = {}
 ) {
@@ -65,10 +64,12 @@ fun MlkCameraPreview(
                     scaleType = PreviewView.ScaleType.FILL_START
                 }.also { previewView ->
                     setUpDetector(cameraController, context)
-                    cameraController.cameraSelector = defaultSelector
                     cameraController.bindToLifecycle(lifecycleOwner)
                     previewView.controller = cameraController
                 }
+            },
+            update = {
+                cameraController.cameraSelector = cameraSelector
             }
         )
 
@@ -80,15 +81,16 @@ fun MlkCameraPreview(
                 .padding(end = 16.dp, bottom = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            if (isFlipCameraEnabled) {
+            if (onFlipCamera != null) {
                 FloatingActionButton(
                     onClick = {
-                        cameraController.cameraSelector =
-                            if (cameraController.cameraSelector == DEFAULT_BACK_CAMERA) {
+                        val newSelector =
+                            if (cameraSelector == DEFAULT_BACK_CAMERA) {
                                 DEFAULT_FRONT_CAMERA
                             } else {
                                 DEFAULT_BACK_CAMERA
                             }
+                        onFlipCamera(newSelector)
                     }
                 ) {
                     Icon(
@@ -97,10 +99,10 @@ fun MlkCameraPreview(
                     )
                 }
 
-                if (isCapturePhotoEnabled && onPhotoCaptured != null) {
+                if (onPhotoCapture != null) {
                     FloatingActionButton(
                         onClick = {
-                            capturePhoto(context, cameraController, onPhotoCaptured)
+                            capturePhoto(context, cameraController, onPhotoCapture)
                         }
                     ) {
                         Icon(

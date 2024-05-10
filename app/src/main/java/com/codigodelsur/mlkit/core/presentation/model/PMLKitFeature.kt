@@ -71,8 +71,8 @@ sealed class PMLKitFeature(
 
     companion object {
         val all = listOf(
-            TextRecognition,
             BarcodeScanner,
+            TextRecognition,
             FaceDetection,
             SelfieSegmentation,
             ObjectDetection,

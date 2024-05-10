@@ -1,6 +1,7 @@
 package com.codigodelsur.mlkit.feature.selfiesegmentation.presentation
 
 import android.graphics.Bitmap
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.compose.foundation.Canvas
@@ -74,6 +75,7 @@ private fun SelfieSegmentationScreen(
 ) {
     var takenPhoto by remember { mutableStateOf<Bitmap?>(null) }
     var modifiedPhoto by remember { mutableStateOf<Bitmap?>(null) }
+    var cameraSelector by remember { mutableStateOf(CameraSelector.DEFAULT_FRONT_CAMERA) }
     val currentOnSelfieSegmented by rememberUpdatedState(onSelfieSegmented)
     Column(modifier = modifier.fillMaxSize()) {
         MlkTopAppBar(
@@ -87,8 +89,9 @@ private fun SelfieSegmentationScreen(
                 if (takenPhoto == null || modifiedPhoto == null) {
                     MlkCameraPreview(
                         modifier = Modifier.fillMaxSize(),
-                        isCapturePhotoEnabled = true,
-                        onPhotoCaptured = {
+                        cameraSelector = cameraSelector,
+                        onFlipCamera = { cameraSelector = it },
+                        onPhotoCapture = {
                             takenPhoto = it
                             modifiedPhoto = it
                         },

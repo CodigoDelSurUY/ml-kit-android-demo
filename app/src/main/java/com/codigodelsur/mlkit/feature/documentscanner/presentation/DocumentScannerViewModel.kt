@@ -1,6 +1,7 @@
 package com.codigodelsur.mlkit.feature.documentscanner.presentation
 
 import androidx.lifecycle.ViewModel
+import com.codigodelsur.mlkit.feature.documentscanner.presentation.model.PScannedDocument
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,15 @@ class DocumentScannerViewModel @Inject constructor() : ViewModel() {
     val state: StateFlow<DocumentScannerUiState> = _state.asStateFlow()
 
     fun updateDocumentScan(result: GmsDocumentScanningResult?) {
-        _state.update { it.copy(scanningResult = result) }
+        val pdf = result?.pdf?.uri
+        val pages = result?.pages?.map { page -> page.imageUri }
+        if (pdf != null && pages != null) {
+            _state.update {
+                it.copy(
+                    scannedDocument = PScannedDocument(pdf = pdf, pages = pages)
+                )
+            }
+        }
     }
 
     fun showScannerError(error: String) {
@@ -29,7 +38,7 @@ class DocumentScannerViewModel @Inject constructor() : ViewModel() {
     fun showSaveSuccess() {
         _state.update {
             it.copy(
-                scanningResult = null,
+                scannedDocument = null,
                 saveSuccess = true
             )
         }

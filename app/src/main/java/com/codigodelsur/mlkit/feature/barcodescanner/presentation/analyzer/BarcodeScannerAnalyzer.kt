@@ -46,6 +46,7 @@ class BarcodeScannerAnalyzer(
                         }
                     }
                     .addOnFailureListener {
+                        // We could propagate the error to show a message if needed
                         it.printStackTrace()
                     }
                     .addOnCompleteListener {

@@ -1,9 +1,10 @@
 package com.codigodelsur.mlkit.feature.documentscanner.presentation
 
-import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
+
+import com.codigodelsur.mlkit.feature.documentscanner.presentation.model.PScannedDocument
 
 data class DocumentScannerUiState(
-    val scanningResult: GmsDocumentScanningResult? = null,
+    val scannedDocument: PScannedDocument? = null,
     val scannerError: String? = null,
     val saveSuccess: Boolean = false
 )

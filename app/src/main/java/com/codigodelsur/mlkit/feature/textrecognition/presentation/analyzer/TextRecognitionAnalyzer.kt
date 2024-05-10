@@ -18,8 +18,13 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+/**
+ * Just an example of how a custom, more performant TextAnalyzer could be built in case we don't
+ * care about the coordinates of the text.
+ */
+@Suppress("unused")
 class TextRecognitionAnalyzer(
-    private val onTextRecognized: (String) -> Unit
+    private val onTextRecognized: (String?) -> Unit
 ) : ImageAnalysis.Analyzer {
 
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -42,6 +47,7 @@ class TextRecognitionAnalyzer(
                         }
                     }
                     .addOnFailureListener {
+                        // We could propagate the error to show a message if needed
                         it.printStackTrace()
                     }
                     .addOnCompleteListener {

@@ -1,5 +1,7 @@
 package com.codigodelsur.mlkit.feature.textrecognition.presentation
 
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,11 +22,15 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.codigodelsur.mlkit.R
-import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
 import com.codigodelsur.mlkit.core.presentation.component.CameraPermissionRequester
 import com.codigodelsur.mlkit.core.presentation.component.MlkCameraPreview
 import com.codigodelsur.mlkit.core.presentation.component.MlkTopAppBar
-import com.codigodelsur.mlkit.feature.textrecognition.presentation.analyzer.TextRecognitionAnalyzer
+import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
+import com.codigodelsur.mlkit.core.presentation.theme.Typography
+import com.codigodelsur.mlkit.feature.textrecognition.presentation.component.TextBoundingBoxesOverlay
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.google.mlkit.vision.text.Text as MLKitText
 
 @Composable
 fun TextRecognitionRoute(
@@ -45,8 +51,8 @@ fun TextRecognitionRoute(
 @Composable
 private fun TextRecognitionScreen(
     modifier: Modifier = Modifier,
-    recognizedText: String?,
-    onTextRecognized: (String) -> Unit,
+    recognizedText: MLKitText?,
+    onTextRecognized: (MLKitText?) -> Unit,
     onBackClick: () -> Unit
 ) {
     val currentOnTextRecognized by rememberUpdatedState(onTextRecognized)
@@ -64,12 +70,29 @@ private fun TextRecognitionScreen(
                 MlkCameraPreview(
                     modifier = Modifier.weight(3.0f),
                     setUpDetector = { cameraController, context ->
+                        val executor = ContextCompat.getMainExecutor(context)
+                        val textRecognizer =
+                            TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
                         cameraController.setImageAnalysisAnalyzer(
                             ContextCompat.getMainExecutor(context),
-                            TextRecognitionAnalyzer(onTextRecognized = currentOnTextRecognized)
+                            MlKitAnalyzer(
+                                listOf(textRecognizer),
+                                ImageAnalysis.COORDINATE_SYSTEM_VIEW_REFERENCED,
+                                executor
+                            ) { result: MlKitAnalyzer.Result? ->
+                                val text = result?.getValue(textRecognizer)
+                                currentOnTextRecognized(text)
+                            }
                         )
                     }
-                )
+                ) {
+                    if (recognizedText != null) {
+                        TextBoundingBoxesOverlay(
+                            modifier = Modifier.fillMaxSize(),
+                            text = recognizedText
+                        )
+                    }
+                }
                 Column(
                     modifier = Modifier
                         .weight(1.0f)
@@ -82,7 +105,8 @@ private fun TextRecognitionScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
-                        text = recognizedText ?: "",
+                        style = Typography.bodyLarge,
+                        text = recognizedText?.text ?: "",
                     )
                 }
             }
@@ -95,7 +119,7 @@ private fun TextRecognitionScreen(
 private fun TextRecognitionScreenPreview() {
     MlkTheme {
         TextRecognitionScreen(
-            recognizedText = "Test Text",
+            recognizedText = null,
             onTextRecognized = {},
             onBackClick = {})
     }
