@@ -19,7 +19,7 @@ import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
 fun ChatReplySuggestions(
     modifier: Modifier = Modifier,
     suggestions: List<String>,
-    onSuggestionClicked: (String) -> Unit
+    onSuggestionClick: (String) -> Unit
 ) {
     LazyRow(
         modifier = modifier.background(MaterialTheme.colorScheme.surface),
@@ -27,7 +27,7 @@ fun ChatReplySuggestions(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
         items(suggestions) {
-            ReplySuggestionItem(suggestion = it, onClick = { onSuggestionClicked(it) })
+            ReplySuggestionItem(suggestion = it, onClick = { onSuggestionClick(it) })
         }
     }
 }
@@ -46,7 +46,7 @@ private fun ChatReplySuggestionsPreview() {
         ChatReplySuggestions(
             modifier = Modifier.fillMaxWidth(),
             suggestions = listOf("OK", "No way!", "Maybe..."),
-            onSuggestionClicked = {}
+            onSuggestionClick = {}
         )
     }
 }

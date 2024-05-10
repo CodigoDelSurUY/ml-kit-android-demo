@@ -1,4 +1,4 @@
-package com.codigodelsur.mlkit.feature.translation.presentation
+package com.codigodelsur.mlkit.feature.entityextraction.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -25,56 +25,55 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.codigodelsur.mlkit.R
-import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
-import com.codigodelsur.mlkit.core.presentation.theme.Typography
 import com.codigodelsur.mlkit.core.presentation.component.LoadingButton
 import com.codigodelsur.mlkit.core.presentation.component.MlkTopAppBar
 import com.codigodelsur.mlkit.core.presentation.component.ShowSnackbarEffect
 import com.codigodelsur.mlkit.core.presentation.model.PSnackbar
+import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
+import com.codigodelsur.mlkit.core.presentation.theme.Typography
+import com.codigodelsur.mlkit.feature.entityextraction.presentation.component.EntityAnnotatedText
+import com.codigodelsur.mlkit.feature.entityextraction.presentation.model.PEntityExtractionResult
 
 @Composable
-fun TranslationRoute(
+fun EntityExtractionRoute(
     modifier: Modifier = Modifier,
-    viewModel: TranslationViewModel = hiltViewModel(),
+    viewModel: EntityExtractionViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    state.translationError?.let {
+    state.extractionError?.let {
         ShowSnackbarEffect(snackbar = PSnackbar.Text(it)) {
-            viewModel.hideTranslationError()
+            viewModel.hideExtractionError()
         }
     }
 
-    TranslationScreen(
+    EntityExtractionScreen(
         modifier = modifier,
         inputText = state.inputText,
-        outputText = state.outputText,
         isLoading = state.isLoading,
-        onInputTextChange = { viewModel.updateInputText(text = it) },
-        onTranslateClick = { viewModel.translate() },
+        extractionResult = state.extractionResult,
+        onInputTextChange = viewModel::updateInputText,
+        onExtractClick = viewModel::extractEntities,
         onBackClick = onBackClick
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TranslationScreen(
-    modifier: Modifier,
+private fun EntityExtractionScreen(
+    modifier: Modifier = Modifier,
     inputText: String,
-    outputText: String,
+    extractionResult: PEntityExtractionResult?,
     isLoading: Boolean,
     onInputTextChange: (String) -> Unit,
-    onTranslateClick: () -> Unit,
+    onExtractClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
+    Column(modifier = modifier.fillMaxSize()) {
         MlkTopAppBar(
-            titleRes = R.string.feature_translation_title,
+            titleRes = R.string.feature_entity_extraction_title,
             onNavigationClick = onBackClick
         )
         Column(
@@ -86,7 +85,7 @@ private fun TranslationScreen(
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.translation_instructions),
+                text = stringResource(id = R.string.entity_extraction_instructions),
                 style = Typography.bodyMedium
             )
 
@@ -97,44 +96,46 @@ private fun TranslationScreen(
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
                 value = inputText,
                 onValueChange = onInputTextChange,
-                label = { Text(text = stringResource(id = R.string.translation_input_label)) }
+                label = { Text(text = stringResource(id = R.string.entity_extraction_input_label)) }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             LoadingButton(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.translation_translate_button),
+                text = stringResource(id = R.string.entity_extraction_extract_button),
                 enabled = inputText.isNotBlank(),
                 loading = isLoading,
                 onClick = {
                     focusManager.clearFocus()
-                    onTranslateClick()
+                    onExtractClick()
                 }
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = outputText,
-                style = Typography.displaySmall
-            )
+            if (extractionResult != null) {
+                EntityAnnotatedText(
+                    modifier = Modifier.fillMaxWidth(),
+                    style = Typography.bodyLarge,
+                    text = extractionResult.text,
+                    entityAnnotations = extractionResult.entityAnnotations
+                )
+            }
         }
     }
 }
 
 @Preview
 @Composable
-private fun TranslationScreenPreview() {
+private fun EntityExtractionScreenPreview() {
     MlkTheme {
-        TranslationScreen(
-            modifier = Modifier.fillMaxSize(),
-            inputText = "¡Hola!, ¿Cómo estás?",
-            outputText = "Hi, how are you?",
+        EntityExtractionScreen(
+            inputText = "",
+            extractionResult = null,
             isLoading = false,
             onInputTextChange = {},
-            onTranslateClick = {},
+            onExtractClick = {},
             onBackClick = {}
         )
     }

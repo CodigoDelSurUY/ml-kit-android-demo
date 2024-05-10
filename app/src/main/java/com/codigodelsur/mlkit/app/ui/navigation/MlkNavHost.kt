@@ -9,6 +9,8 @@ import com.codigodelsur.mlkit.feature.barcodescanner.presentation.navigation.bar
 import com.codigodelsur.mlkit.feature.barcodescanner.presentation.navigation.navigateToBarcodeScanner
 import com.codigodelsur.mlkit.feature.documentscanner.presentation.navigation.documentScannerScreen
 import com.codigodelsur.mlkit.feature.documentscanner.presentation.navigation.navigateToDocumentScanner
+import com.codigodelsur.mlkit.feature.entityextraction.presentation.navigation.entityExtractionScreen
+import com.codigodelsur.mlkit.feature.entityextraction.presentation.navigation.navigateToEntityExtraction
 import com.codigodelsur.mlkit.feature.explorer.presentation.navigation.EXPLORER_ROUTE
 import com.codigodelsur.mlkit.feature.explorer.presentation.navigation.explorerScreen
 import com.codigodelsur.mlkit.feature.facedetection.presentation.navigation.faceDetectionScreen
@@ -48,6 +50,7 @@ fun MlkNavHost(
                 is PMLKitFeature.PoseDetection -> navController.navigateToPoseDetection()
                 is PMLKitFeature.Translation -> navController.navigateToTranslation()
                 is PMLKitFeature.SmartReply -> navController.navigateToSmartReply()
+                is PMLKitFeature.EntityExtraction -> navController.navigateToEntityExtraction()
             }
         })
 
@@ -60,5 +63,6 @@ fun MlkNavHost(
         selfieSegmentationScreen { navController.popBackStack() }
         translationScreen { navController.popBackStack() }
         smartReplyScreen { navController.popBackStack() }
+        entityExtractionScreen { navController.popBackStack() }
     }
 }

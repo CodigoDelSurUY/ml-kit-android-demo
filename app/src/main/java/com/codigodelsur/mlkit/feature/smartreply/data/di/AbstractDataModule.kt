@@ -2,8 +2,6 @@ package com.codigodelsur.mlkit.feature.smartreply.data.di
 
 import com.codigodelsur.mlkit.feature.smartreply.data.datasource.ChatLocalDataSource
 import com.codigodelsur.mlkit.feature.smartreply.data.datasource.ChatLocalDataSourceImpl
-import com.codigodelsur.mlkit.feature.smartreply.data.datasource.ChatRemoteDataSource
-import com.codigodelsur.mlkit.feature.smartreply.data.datasource.ChatRemoteDataSourceImpl
 import com.codigodelsur.mlkit.feature.smartreply.data.repository.ChatRepositoryImpl
 import com.codigodelsur.mlkit.feature.smartreply.domain.repository.ChatRepository
 import dagger.Binds
@@ -21,12 +19,6 @@ abstract class AbstractDataModule {
     abstract fun bindChatLocalDataSourceSource(
         chatLocalDataSourceImpl: ChatLocalDataSourceImpl
     ): ChatLocalDataSource
-
-    @Binds
-    @Singleton
-    abstract fun bindChatRemoteDataSourceSource(
-        chatRemoteDataSourceImpl: ChatRemoteDataSourceImpl
-    ): ChatRemoteDataSource
 
 
     @Binds

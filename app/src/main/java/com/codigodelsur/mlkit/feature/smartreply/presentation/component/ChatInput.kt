@@ -1,10 +1,13 @@
 package com.codigodelsur.mlkit.feature.smartreply.presentation.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -21,24 +24,26 @@ import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
 fun ChatInput(
     modifier: Modifier = Modifier,
     inputMessage: String,
-    onInputChanged: (String) -> Unit,
-    onSendClicked: () -> Unit
+    onInputChange: (String) -> Unit,
+    onSendClick: () -> Unit
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextField(
             modifier = Modifier.weight(1.0f),
             value = inputMessage,
-            onValueChange = onInputChanged,
+            onValueChange = onInputChange,
             placeholder = {
                 Text(text = "Type something")
             }
         )
         Spacer(modifier = Modifier.width(8.dp))
         FloatingActionButton(
-            onClick = onSendClicked
+            onClick = onSendClick
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_send_24),
@@ -52,6 +57,6 @@ fun ChatInput(
 @Composable
 private fun ChatInputPreview() {
     MlkTheme {
-        ChatInput(inputMessage = "", onInputChanged = {}, onSendClicked = {})
+        ChatInput(inputMessage = "", onInputChange = {}, onSendClick = {})
     }
 }

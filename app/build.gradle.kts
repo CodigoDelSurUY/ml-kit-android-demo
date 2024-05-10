@@ -89,6 +89,7 @@ dependencies {
     implementation(libs.google.mlkit.languageIdentification)
     implementation(libs.google.mlkit.translation)
     implementation(libs.google.mlkit.smartReply)
+    implementation(libs.google.mlkit.entityExtraction)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

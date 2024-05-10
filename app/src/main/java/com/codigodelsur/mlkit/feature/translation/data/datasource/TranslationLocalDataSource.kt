@@ -1,25 +1,22 @@
 package com.codigodelsur.mlkit.feature.translation.data.datasource
 
-import com.codigodelsur.mlkit.core.presentation.model.PMLKitFeature
-import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.languageid.LanguageIdentifier
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
-import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-interface TranslationRemoteDataSource {
+interface TranslationLocalDataSource {
     suspend fun identifyLanguage(text: String): String
     suspend fun translate(inputLanguage: String, outputLanguage: String, text: String): String
 }
 
-class TranslationRemoteDataSourceImpl @Inject constructor(
+class TranslationLocalDataSourceImpl @Inject constructor(
     private val languageIdentifier: LanguageIdentifier
-): TranslationRemoteDataSource {
+) : TranslationLocalDataSource {
 
     override suspend fun identifyLanguage(text: String): String = suspendCoroutine { continuation ->
         languageIdentifier.identifyLanguage(text)

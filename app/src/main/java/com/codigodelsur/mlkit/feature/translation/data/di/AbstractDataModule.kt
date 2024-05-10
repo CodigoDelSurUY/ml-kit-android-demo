@@ -1,7 +1,7 @@
 package com.codigodelsur.mlkit.feature.translation.data.di
 
-import com.codigodelsur.mlkit.feature.translation.data.datasource.TranslationRemoteDataSource
-import com.codigodelsur.mlkit.feature.translation.data.datasource.TranslationRemoteDataSourceImpl
+import com.codigodelsur.mlkit.feature.translation.data.datasource.TranslationLocalDataSource
+import com.codigodelsur.mlkit.feature.translation.data.datasource.TranslationLocalDataSourceImpl
 import com.codigodelsur.mlkit.feature.translation.data.repository.TranslationRepositoryImpl
 import com.codigodelsur.mlkit.feature.translation.domain.repository.TranslationRepository
 import dagger.Binds
@@ -16,9 +16,9 @@ abstract class AbstractDataModule {
 
     @Binds
     @Singleton
-    abstract fun bindTranslationRemoteDataSource(
-        translationRemoteDataSourceImpl: TranslationRemoteDataSourceImpl
-    ): TranslationRemoteDataSource
+    abstract fun bindTranslationLocalDataSource(
+        translationLocalDataSourceImpl: TranslationLocalDataSourceImpl
+    ): TranslationLocalDataSource
 
 
     @Binds

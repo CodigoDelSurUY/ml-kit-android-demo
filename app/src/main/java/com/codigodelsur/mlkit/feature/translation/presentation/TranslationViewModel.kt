@@ -20,12 +20,7 @@ class TranslationViewModel @Inject constructor(
 
 
     fun updateInputText(text: String) {
-        _state.update {
-            it.copy(
-                inputText = text,
-                outputText = ""
-            )
-        }
+        _state.update { it.copy(inputText = text) }
     }
 
     fun translate() {

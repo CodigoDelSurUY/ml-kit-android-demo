@@ -63,6 +63,12 @@ sealed class PMLKitFeature(
         descriptionRes = R.string.feature_smart_reply_description
     )
 
+    data object EntityExtraction: PMLKitFeature(
+        imageRes = R.drawable.card_entity_extraction,
+        titleRes = R.string.feature_entity_extraction_title,
+        descriptionRes = R.string.feature_entity_extraction_description
+    )
+
     companion object {
         val all = listOf(
             TextRecognition,
@@ -73,7 +79,8 @@ sealed class PMLKitFeature(
             PoseDetection,
             DocumentScanner,
             Translation,
-            SmartReply
+            SmartReply,
+            EntityExtraction
         )
     }
 }
