@@ -24,7 +24,13 @@ import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
 @Composable
 fun MlkTopAppBar(
     modifier: Modifier = Modifier,
-    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
+    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+        containerColor = MaterialTheme.colorScheme.primary,
+        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+        scrolledContainerColor = MaterialTheme.colorScheme.primary,
+        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+    ),
     @StringRes titleRes: Int,
     navigationIcon: ImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
     navigationIconContentDescription: String = stringResource(id = R.string.back),
@@ -40,7 +46,7 @@ fun MlkTopAppBar(
                 Icon(
                     imageVector = navigationIcon,
                     contentDescription = navigationIconContentDescription,
-                    tint = MaterialTheme.colorScheme.onSurface,
+                    tint = MaterialTheme.colorScheme.onPrimary,
                 )
             }
         },

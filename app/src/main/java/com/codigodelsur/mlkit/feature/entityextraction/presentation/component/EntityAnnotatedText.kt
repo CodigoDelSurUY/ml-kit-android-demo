@@ -33,8 +33,10 @@ fun EntityAnnotatedText(
             if (annotation.isSupported()) {
                 addStyle(
                     style = SpanStyle(
-                        color = Color.Blue, textDecoration = TextDecoration.Underline
-                    ), start = annotation.start, end = annotation.end
+                        color = Color.Blue,
+                        textDecoration = TextDecoration.Underline
+                    ),
+                    start = annotation.start, end = annotation.end
                 )
                 addStringAnnotation(
                     tag = tag,

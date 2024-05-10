@@ -118,7 +118,7 @@ private fun TranslationScreen(
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = outputText,
-                style = Typography.displaySmall
+                style = Typography.titleLarge
             )
         }
     }

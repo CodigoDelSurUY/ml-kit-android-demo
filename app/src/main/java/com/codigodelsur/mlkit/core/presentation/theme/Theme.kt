@@ -10,31 +10,52 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+private val LightColorScheme = lightColorScheme(
+    primary = Indigo500,
+    onPrimary = Color.White,
+    primaryContainer = Indigo100,
+    onPrimaryContainer = Color.Black,
+    secondary = LightBlue500,
+    onSecondary = Color.White,
+    secondaryContainer = LightBlue100,
+    onSecondaryContainer = Color.Black,
+    tertiary = Teal200,
+    onTertiary = Color.Black,
+    tertiaryContainer = Teal50,
+    onTertiaryContainer = Color.Black,
+    background = Gray100,
+    onBackground = Color.Black,
+    surface = Color.White,
+    onSurface = Color.Black,
+    error = Red700,
+    onError = Color.White
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
+private val DarkColorScheme = darkColorScheme(
+    primary = Indigo100,
+    onPrimary = Color.Black,
+    primaryContainer = Indigo500,
+    onPrimaryContainer = Color.White,
+    secondary = LightBlue100,
+    onSecondary = Color.Black,
+    secondaryContainer = LightBlue500,
+    onSecondaryContainer = Color.White,
+    tertiary = Teal700,
     onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    tertiaryContainer = Teal300,
+    onTertiaryContainer = Color.White,
+    background = Gray800,
+    onBackground = Color.White,
+    surface = Gray900,
+    onSurface = Color.White,
+    error = Red400,
+    onError = Color.Black
 )
 
 @Composable

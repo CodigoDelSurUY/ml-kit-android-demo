@@ -117,7 +117,7 @@ private fun EntityExtractionScreen(
             if (extractionResult != null) {
                 EntityAnnotatedText(
                     modifier = Modifier.fillMaxWidth(),
-                    style = Typography.bodyLarge,
+                    style = Typography.titleLarge,
                     text = extractionResult.text,
                     entityAnnotations = extractionResult.entityAnnotations
                 )
