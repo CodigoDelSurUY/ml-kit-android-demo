@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.mlkit.vision.MlKitAnalyzer
+import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +31,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -75,7 +77,6 @@ private fun SelfieSegmentationScreen(
 ) {
     var takenPhoto by remember { mutableStateOf<Bitmap?>(null) }
     var modifiedPhoto by remember { mutableStateOf<Bitmap?>(null) }
-    var cameraSelector by remember { mutableStateOf(CameraSelector.DEFAULT_FRONT_CAMERA) }
     val currentOnSelfieSegmented by rememberUpdatedState(onSelfieSegmented)
     Column(modifier = modifier.fillMaxSize()) {
         MlkTopAppBar(
@@ -89,8 +90,8 @@ private fun SelfieSegmentationScreen(
                 if (takenPhoto == null || modifiedPhoto == null) {
                     MlkCameraPreview(
                         modifier = Modifier.fillMaxSize(),
-                        cameraSelector = cameraSelector,
-                        onFlipCamera = { cameraSelector = it },
+                        cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA,
+                        scaleType = PreviewView.ScaleType.FIT_CENTER,  // Needed to position the overlay correctly
                         onPhotoCapture = {
                             takenPhoto = it
                             modifiedPhoto = it
@@ -129,6 +130,7 @@ private fun SelfieSegmentationScreen(
                     Image(
                         modifier = Modifier.fillMaxSize(),
                         bitmap = modifiedPhoto!!.asImageBitmap(),
+                        contentScale = ContentScale.Crop,
                         contentDescription = ""
                     )
 
@@ -205,7 +207,15 @@ fun removeBackground(originalBitmap: Bitmap, mask: SegmentationMask): Bitmap {
     // Get mask buffer and prepare for use
     val maskBuffer = mask.buffer.apply { rewind() }
     val pixels = IntArray(originalBitmap.width * originalBitmap.height)
-    originalBitmap.getPixels(pixels, 0, originalBitmap.width, 0, 0, originalBitmap.width, originalBitmap.height)
+    originalBitmap.getPixels(
+        pixels,
+        0,
+        originalBitmap.width,
+        0,
+        0,
+        originalBitmap.width,
+        originalBitmap.height
+    )
 
     // Apply the mask
     for (y in 0 until originalBitmap.height) {
@@ -224,7 +234,15 @@ fun removeBackground(originalBitmap: Bitmap, mask: SegmentationMask): Bitmap {
     }
 
     // Draw the modified pixels array to the canvas
-    resultBitmap.setPixels(pixels, 0, originalBitmap.width, 0, 0, originalBitmap.width, originalBitmap.height)
+    resultBitmap.setPixels(
+        pixels,
+        0,
+        originalBitmap.width,
+        0,
+        0,
+        originalBitmap.width,
+        originalBitmap.height
+    )
 
     return resultBitmap
 }
@@ -256,7 +274,6 @@ private fun DrawScope.drawSegmentationMask(
 ) {
     val scaleX = size.width / width
     val scaleY = size.height / height
-    buffer.rewind()
     for (y in 0 until height) {
         for (x in 0 until width) {
             val color =

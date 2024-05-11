@@ -2,7 +2,6 @@ package com.codigodelsur.mlkit.core.presentation.component
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -22,10 +21,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
@@ -41,8 +42,9 @@ import com.codigodelsur.mlkit.core.presentation.util.rotateBitmap
 fun MlkCameraPreview(
     modifier: Modifier,
     cameraSelector: CameraSelector = DEFAULT_BACK_CAMERA,
+    scaleType: PreviewView.ScaleType = PreviewView.ScaleType.FILL_CENTER,
     onPhotoCapture: ((Bitmap) -> Unit)? = null,
-    onFlipCamera: ((CameraSelector) -> Unit)? = null,
+    onSwitchCamera: ((CameraSelector) -> Unit)? = null,
     setUpDetector: (LifecycleCameraController, Context) -> Unit,
     overlays: @Composable BoxScope.() -> Unit = {}
 ) {
@@ -50,6 +52,7 @@ fun MlkCameraPreview(
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
     val cameraController: LifecycleCameraController =
         remember { LifecycleCameraController(context) }
+    val background = MaterialTheme.colorScheme.surface
     Box(modifier = modifier) {
         AndroidView(
             modifier = Modifier.fillMaxSize(),
@@ -59,9 +62,9 @@ fun MlkCameraPreview(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
-                    setBackgroundColor(Color.BLACK)
+                    setBackgroundColor(background.toArgb())
                     implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-                    scaleType = PreviewView.ScaleType.FILL_START
+                    this.scaleType = scaleType
                 }.also { previewView ->
                     setUpDetector(cameraController, context)
                     cameraController.bindToLifecycle(lifecycleOwner)
@@ -81,7 +84,7 @@ fun MlkCameraPreview(
                 .padding(end = 16.dp, bottom = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            if (onFlipCamera != null) {
+            if (onSwitchCamera != null) {
                 FloatingActionButton(
                     onClick = {
                         val newSelector =
@@ -90,7 +93,7 @@ fun MlkCameraPreview(
                             } else {
                                 DEFAULT_BACK_CAMERA
                             }
-                        onFlipCamera(newSelector)
+                        onSwitchCamera(newSelector)
                     }
                 ) {
                     Icon(
@@ -98,18 +101,18 @@ fun MlkCameraPreview(
                         contentDescription = stringResource(id = R.string.camera_preview_switch_camera)
                     )
                 }
+            }
 
-                if (onPhotoCapture != null) {
-                    FloatingActionButton(
-                        onClick = {
-                            capturePhoto(context, cameraController, onPhotoCapture)
-                        }
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_camera_24),
-                            contentDescription = stringResource(id = R.string.camera_preview_capture_photo)
-                        )
+            if (onPhotoCapture != null) {
+                FloatingActionButton(
+                    onClick = {
+                        capturePhoto(context, cameraController, onPhotoCapture)
                     }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_camera_24),
+                        contentDescription = stringResource(id = R.string.camera_preview_capture_photo)
+                    )
                 }
             }
         }

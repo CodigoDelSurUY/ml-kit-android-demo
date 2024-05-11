@@ -15,12 +15,19 @@ class PoseDetectionViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow(PoseDetectionUiState())
     val state: StateFlow<PoseDetectionUiState> = _state.asStateFlow()
 
-    fun updateDetectedPose(pose: PPose?, classification: PoseClassificationResult?) {
+    fun updateDetectedPose(
+        pose: PPose?,
+        classification: PoseClassificationResult?,
+        inputImageWidth: Int,
+        inputImageHeight: Int
+    ) {
         _state.update {
             it.copy(
                 detectedPose = pose,
                 reps = classification?.reps ?: 0,
-                className = classification?.className
+                className = classification?.className,
+                inputImageWidth = inputImageWidth,
+                inputImageHeight = inputImageHeight
             )
         }
     }

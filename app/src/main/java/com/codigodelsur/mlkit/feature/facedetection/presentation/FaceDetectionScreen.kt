@@ -92,7 +92,7 @@ private fun FaceDetectionScreen(
                 MlkCameraPreview(
                     modifier = Modifier.fillMaxSize(),
                     cameraSelector = cameraSelector,
-                    onFlipCamera = { cameraSelector = it },
+                    onSwitchCamera = { cameraSelector = it },
                     setUpDetector = { cameraController, context ->
                         val realTimeOpts = FaceDetectorOptions.Builder()
                             .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
