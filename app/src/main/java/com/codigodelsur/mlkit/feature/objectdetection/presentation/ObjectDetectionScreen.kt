@@ -83,6 +83,7 @@ private fun ObjectDetectionScreen(
 //                            .build()
 //                        val objectDetector = ObjectDetection.getClient(options)
 
+                        // Custom object detector
                         val localModel = LocalModel.Builder()
                             .setAssetFilePath("object/mario_android_cup.tflite")
                             .build()

@@ -17,4 +17,12 @@ class SelfieSegmentationViewModel @Inject constructor() : ViewModel() {
     fun updateSegmentedMask(mask: SegmentationMask?) {
         _state.update { it.copy(selfieMask = mask) }
     }
+
+    fun showEditorError(throwable: Throwable) {
+        _state.update { it.copy(editorError = throwable.message) }
+    }
+
+    fun hideEditorError() {
+        _state.update { it.copy(editorError = null) }
+    }
 }

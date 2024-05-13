@@ -1,19 +1,14 @@
-package com.codigodelsur.mlkit.feature.posedetection.presentation.analyzer
+package com.codigodelsur.mlkit.feature.selfiesegmentation.presentation.analyzer
 
-import android.content.Context
 import android.media.Image
 import androidx.annotation.OptIn
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import com.codigodelsur.mlkit.feature.posedetection.presentation.classification.PoseClassificationResult
-import com.codigodelsur.mlkit.feature.posedetection.presentation.classification.PoseClassifierProcessor
-import com.codigodelsur.mlkit.feature.posedetection.presentation.model.PPose
-import com.codigodelsur.mlkit.feature.posedetection.presentation.model.toPresentation
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.pose.Pose
-import com.google.mlkit.vision.pose.PoseDetection
-import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions
+import com.google.mlkit.vision.segmentation.Segmentation
+import com.google.mlkit.vision.segmentation.SegmentationMask
+import com.google.mlkit.vision.segmentation.selfie.SelfieSegmenterOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -21,18 +16,17 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class PoseDetectionAnalyzer(
-    context: Context,
-    private val onPoseDetected: (PPose?, PoseClassificationResult?, Int, Int) -> Unit
+class SelfieSegmentationAnalyzer(
+    private val onSelfieSegmented: (SegmentationMask) -> Unit
 ) : ImageAnalysis.Analyzer {
 
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private val poseDetector = PoseDetection.getClient(
-        AccuratePoseDetectorOptions.Builder()
-            .setDetectorMode(AccuratePoseDetectorOptions.STREAM_MODE)
+    private val segmenter = Segmentation.getClient(
+        SelfieSegmenterOptions.Builder()
+            .setDetectorMode(SelfieSegmenterOptions.STREAM_MODE)
+            .enableRawSizeMask()
             .build()
     )
-    private val poseClassifier = PoseClassifierProcessor(context, true)
 
     @OptIn(ExperimentalGetImage::class)
     override fun analyze(imageProxy: ImageProxy) {
@@ -43,15 +37,9 @@ class PoseDetectionAnalyzer(
 
 
             suspendCoroutine { continuation ->
-                poseDetector.process(inputImage)
-                    .addOnSuccessListener { pose: Pose ->
-                        val classification = poseClassifier.getPoseResult(pose)
-                        onPoseDetected(
-                            pose.toPresentation(),
-                            classification,
-                            inputImage.width,
-                            inputImage.height
-                        )
+                segmenter.process(inputImage)
+                    .addOnSuccessListener { mask: SegmentationMask ->
+                        onSelfieSegmented(mask)
                     }
                     .addOnFailureListener {
                         // We could propagate the error to show a message if needed

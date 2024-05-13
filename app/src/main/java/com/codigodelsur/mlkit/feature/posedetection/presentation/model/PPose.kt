@@ -53,7 +53,7 @@ data class PPose(
 
 fun Pose.toPresentation(): PPose? {
     val nose = getPoseLandmark(PoseLandmark.NOSE)
-    // Its all or nothing with landmarks so if any of them is null, all of them will and vice-versa
+    // Its all or nothing with landmarks so if any of them is null, all of them will and vice-versa.
     return if (nose == null) {
         null
     } else {

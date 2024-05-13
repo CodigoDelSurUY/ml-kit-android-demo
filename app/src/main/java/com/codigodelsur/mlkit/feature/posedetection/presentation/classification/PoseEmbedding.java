@@ -82,7 +82,7 @@ public class PoseEmbedding {
     List<PointF3D> embedding = new ArrayList<>();
 
     // We use several pairwise 3D distances to form pose embedding. These were selected
-    // based on experimentation for best results with our default pose classes as captued in the
+    // based on experimentation for best results with our default pose classes as captured in the
     // pose samples csv. Feel free to play with this and add or remove for your use-cases.
 
     // We group our distances by number of joints between the pairs.
