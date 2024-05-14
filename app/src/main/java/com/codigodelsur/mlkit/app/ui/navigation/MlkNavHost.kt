@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.codigodelsur.mlkit.core.presentation.model.PMLKitFeature
-import com.codigodelsur.mlkit.feature.barcodescanner.presentation.navigation.barcodeScannerScreen
-import com.codigodelsur.mlkit.feature.barcodescanner.presentation.navigation.navigateToBarcodeScanner
+import com.codigodelsur.mlkit.feature.barcodescanning.presentation.navigation.barcodeScanningScreen
+import com.codigodelsur.mlkit.feature.barcodescanning.presentation.navigation.navigateToBarcodeScanning
 import com.codigodelsur.mlkit.feature.documentscanner.presentation.navigation.documentScannerScreen
 import com.codigodelsur.mlkit.feature.documentscanner.presentation.navigation.navigateToDocumentScanner
 import com.codigodelsur.mlkit.feature.entityextraction.presentation.navigation.entityExtractionScreen
@@ -43,7 +43,7 @@ fun MlkNavHost(
     ) {
         explorerScreen(onFeatureClick = { feature ->
             when (feature) {
-                is PMLKitFeature.BarcodeScanner -> navController.navigateToBarcodeScanner()
+                is PMLKitFeature.BarcodeScanning -> navController.navigateToBarcodeScanning()
                 is PMLKitFeature.TextRecognition -> navController.navigateToTextRecognition()
                 is PMLKitFeature.FaceDetection -> navController.navigateToFaceDetection()
                 is PMLKitFeature.ObjectDetection -> navController.navigateToObjectDetection()
@@ -57,7 +57,7 @@ fun MlkNavHost(
             }
         })
 
-        barcodeScannerScreen { navController.popBackStack() }
+        barcodeScanningScreen { navController.popBackStack() }
         textRecognitionScreen { navController.popBackStack() }
         faceDetectionScreen { navController.popBackStack() }
         objectDetectionScreen { navController.popBackStack() }

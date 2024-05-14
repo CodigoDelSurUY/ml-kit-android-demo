@@ -1,4 +1,4 @@
-package com.codigodelsur.mlkit.feature.barcodescanner.presentation.component
+package com.codigodelsur.mlkit.feature.barcodescanning.presentation.component
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize

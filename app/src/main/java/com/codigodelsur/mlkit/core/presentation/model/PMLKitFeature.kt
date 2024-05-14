@@ -33,10 +33,10 @@ sealed class PMLKitFeature(
         descriptionRes = R.string.feature_object_detection_description
     )
 
-    data object BarcodeScanner : PMLKitFeature(
+    data object BarcodeScanning : PMLKitFeature(
         imageRes = R.drawable.card_barcode_scanning,
-        titleRes = R.string.feature_barcode_scanner_title,
-        descriptionRes = R.string.feature_barcode_scanner_description
+        titleRes = R.string.feature_barcode_scanning_title,
+        descriptionRes = R.string.feature_barcode_scanning_description
     )
 
     data object PoseDetection : PMLKitFeature(
@@ -77,7 +77,7 @@ sealed class PMLKitFeature(
 
     companion object {
         val all = listOf(
-            BarcodeScanner,
+            BarcodeScanning,
             TextRecognition,
             FaceDetection,
             ObjectDetection,

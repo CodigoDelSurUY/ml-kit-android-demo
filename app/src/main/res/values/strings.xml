@@ -23,7 +23,7 @@
     <string name="feature_text_recognition_title">Text Recognition</string>
     <string name="feature_text_recognition_description">Recognize and extract text from images.</string>
 
-    <string name="feature_face_detection_title">Face detection</string>
+    <string name="feature_face_detection_title">Face Detection</string>
     <string name="feature_face_detection_description">Detect faces and facial landmarks.</string>
     <string name="face_detection_show_bounding_boxes">Show bounding boxes</string>
     <string name="face_detection_hide_bounding_boxes">Hide bounding boxes</string>
@@ -35,10 +35,10 @@
     <string name="object_detection_hide_unlabeled">Hide unlabeled</string>
     <string name="object_detection_show_all">Show all</string>
 
-    <string name="feature_barcode_scanner_title">Barcode Scanner</string>
-    <string name="feature_barcode_scanner_description">Scan and process barcodes. Supports most standard 1D and 2D formats.</string>
+    <string name="feature_barcode_scanning_title">Barcode Scanning</string>
+    <string name="feature_barcode_scanning_description">Scan and process barcodes. Supports most standard 1D and 2D formats.</string>
 
-    <string name="feature_pose_detection_title">Pose detection</string>
+    <string name="feature_pose_detection_title">Pose Detection</string>
     <string name="feature_pose_detection_description">Detect the position of the human body in real time.</string>
     <string name="pose_detection_reps_counter">Reps: %d</string>
     <string name="pose_detection_classification">Class: %s</string>
@@ -58,9 +58,8 @@
     <string name="feature_smart_reply_description">Generate reply suggestions in text conversations.</string>
     <string name="smart_reply_send_button">Send</string>
 
-    <string name="feature_entity_extraction_title">Entity extraction</string>
+    <string name="feature_entity_extraction_title">Entity Extraction</string>
     <string name="feature_entity_extraction_description">Detect and locate entities (such as addresses, date/time, phone numbers, and more) and take action based on those entities. Works in 15 languages.</string>
-
     <string name="entity_extraction_instructions">Type any text to extract its entities and provide actions based on them.</string>
     <string name="entity_extraction_input_label">Input</string>
     <string name="entity_extraction_extract_button">Extract Entities</string>

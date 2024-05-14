@@ -1,4 +1,4 @@
-package com.codigodelsur.mlkit.feature.barcodescanner.presentation
+package com.codigodelsur.mlkit.feature.barcodescanning.presentation
 
 import android.content.Intent
 import android.net.Uri
@@ -32,14 +32,14 @@ import com.codigodelsur.mlkit.core.presentation.component.CameraPermissionReques
 import com.codigodelsur.mlkit.core.presentation.component.MlkCameraPreview
 import com.codigodelsur.mlkit.core.presentation.component.MlkTopAppBar
 import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
-import com.codigodelsur.mlkit.feature.barcodescanner.presentation.analyzer.BarcodeScannerAnalyzer
-import com.codigodelsur.mlkit.feature.barcodescanner.presentation.component.ScannerFrame
+import com.codigodelsur.mlkit.feature.barcodescanning.presentation.analyzer.BarcodeScanningAnalyzer
+import com.codigodelsur.mlkit.feature.barcodescanning.presentation.component.ScannerFrame
 import com.google.mlkit.vision.barcode.common.Barcode
 
 @Composable
-fun BarcodeScannerRoute(
+fun BarcodeScanningRoute(
     modifier: Modifier = Modifier,
-    viewModel: BarcodeScannerViewModel = hiltViewModel(),
+    viewModel: BarcodeScanningViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -48,7 +48,7 @@ fun BarcodeScannerRoute(
         viewModel.effects.collect {
             it.let {
                 when (it) {
-                    is BarcodeScannerEffect.OpenWebsite -> {
+                    is BarcodeScanningEffect.OpenWebsite -> {
                         val openURL = Intent(Intent.ACTION_VIEW)
                         openURL.data = Uri.parse(it.url)
                         startActivity(context, openURL, null)
@@ -75,7 +75,7 @@ fun BarcodeScannerRoute(
     }
 
 
-    BarcodeScannerScreen(
+    BarcodeScanningScreen(
         modifier = modifier,
         isLoading = state.isLoading,
         onBarcodesDetected = { viewModel.processBarcodes(barcodes = it) },
@@ -86,7 +86,7 @@ fun BarcodeScannerRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun BarcodeScannerScreen(
+private fun BarcodeScanningScreen(
     modifier: Modifier = Modifier,
     isLoading: Boolean,
     onBarcodesDetected: (List<Barcode>) -> Unit,
@@ -95,7 +95,7 @@ private fun BarcodeScannerScreen(
     val currentOnBarcodeDetected by rememberUpdatedState(onBarcodesDetected)
     Column(modifier = modifier.fillMaxSize()) {
         MlkTopAppBar(
-            titleRes = R.string.feature_barcode_scanner_title,
+            titleRes = R.string.feature_barcode_scanning_title,
             onNavigationClick = onBackClick
         )
         CameraPermissionRequester(
@@ -110,7 +110,7 @@ private fun BarcodeScannerScreen(
                     setUpDetector = { cameraController, context ->
                         cameraController.setImageAnalysisAnalyzer(
                             ContextCompat.getMainExecutor(context),
-                            BarcodeScannerAnalyzer(onBarcodesDetected = currentOnBarcodeDetected)
+                            BarcodeScanningAnalyzer(onBarcodesDetected = currentOnBarcodeDetected)
                         )
                     })
 
@@ -130,8 +130,8 @@ private fun BarcodeScannerScreen(
 
 @Preview
 @Composable
-private fun BarcodeScannerScreenPreview() {
+private fun BarcodeScanningScreenPreview() {
     MlkTheme {
-        BarcodeScannerScreen(isLoading = true, onBarcodesDetected = {}, onBackClick = {})
+        BarcodeScanningScreen(isLoading = true, onBarcodesDetected = {}, onBackClick = {})
     }
 }

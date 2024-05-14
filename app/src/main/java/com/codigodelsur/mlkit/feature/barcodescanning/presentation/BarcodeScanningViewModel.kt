@@ -1,4 +1,4 @@
-package com.codigodelsur.mlkit.feature.barcodescanner.presentation
+package com.codigodelsur.mlkit.feature.barcodescanning.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,11 +15,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BarcodeScannerViewModel @Inject constructor() : ViewModel() {
-    private val _state = MutableStateFlow(BarcodeScannerUiState())
-    val state: StateFlow<BarcodeScannerUiState> = _state.asStateFlow()
+class BarcodeScanningViewModel @Inject constructor() : ViewModel() {
+    private val _state = MutableStateFlow(BarcodeScanningUiState())
+    val state: StateFlow<BarcodeScanningUiState> = _state.asStateFlow()
 
-    private val _effects: Channel<BarcodeScannerEffect> = Channel()
+    private val _effects: Channel<BarcodeScanningEffect> = Channel()
     val effects = _effects.receiveAsFlow()
 
     fun processBarcodes(barcodes: List<Barcode>) {
@@ -31,7 +31,7 @@ class BarcodeScannerViewModel @Inject constructor() : ViewModel() {
                     // Simulate a loading
                     _state.update { it.copy(isLoading = true, isEnabled = false) }
                     delay(2000L)
-                    _effects.send(BarcodeScannerEffect.OpenWebsite(url = url))
+                    _effects.send(BarcodeScanningEffect.OpenWebsite(url = url))
                     _state.update { it.copy(isLoading = false) }
                 }
             }

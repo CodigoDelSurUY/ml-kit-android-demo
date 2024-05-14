@@ -1,4 +1,4 @@
-package com.codigodelsur.mlkit.feature.barcodescanner.presentation.analyzer
+package com.codigodelsur.mlkit.feature.barcodescanning.presentation.analyzer
 
 import android.media.Image
 import androidx.annotation.OptIn
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class BarcodeScannerAnalyzer(
+class BarcodeScanningAnalyzer(
     private val onBarcodesDetected: (List<Barcode>) -> Unit
 ) : ImageAnalysis.Analyzer {
 

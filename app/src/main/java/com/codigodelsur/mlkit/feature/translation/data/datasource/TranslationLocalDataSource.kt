@@ -41,7 +41,7 @@ class TranslationLocalDataSourceImpl @Inject constructor(
             .setTargetLanguage(outputLan)
             .build()
         val translator = Translation.getClient(options)
-        // TODO: We should not keep many models in the device since they each take more or less 30 MB
+        // TODO: You should not keep unused models in the device since they each take up to 30 MB, in this example they are kept for simplicity's sake
         translator.downloadModelIfNeeded()
             .addOnFailureListener {
                 continuation.resumeWithException(it)

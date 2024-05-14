@@ -4,6 +4,10 @@ import com.google.mlkit.vision.common.PointF3D
 import com.google.mlkit.vision.pose.Pose
 import com.google.mlkit.vision.pose.PoseLandmark
 
+/**
+ * Just a presentation representation of a [com.google.mlkit.vision.pose.Pose] to more easily access
+ * its landmark coordinates.
+ */
 data class PPose(
     val allLandmarks: List<PointF3D>,
 
