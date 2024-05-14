@@ -86,6 +86,7 @@ dependencies {
     implementation(libs.google.mlkit.barcodeScanner)
     implementation(libs.google.mlkit.poseDetection)
     implementation(libs.google.mlkit.selfieSegmentation)
+    implementation(libs.google.mlkit.subjectSegmentation)
     implementation(libs.google.mlkit.languageIdentification)
     implementation(libs.google.mlkit.translation)
     implementation(libs.google.mlkit.smartReply)

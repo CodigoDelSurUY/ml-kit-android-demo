@@ -20,6 +20,7 @@ objectDetection = "17.0.1"
 barcodeScanner = "18.3.0"
 poseDetection = "18.0.0-beta4"
 selfieSegmentation = "16.0.0-beta5"
+subjectSegmentation = "16.0.0-beta1"
 languageIdentification = "17.0.0"
 translation = "17.0.2"
 smartReply = "16.0.0-beta1"
@@ -62,6 +63,7 @@ google-mlkit-selfieSegmentation = { group = "com.google.mlkit", name = "segmenta
 google-mlkit-languageIdentification = { group = "com.google.android.gms", name = "play-services-mlkit-language-id", version.ref = "languageIdentification" }
 google-mlkit-translation = { group = "com.google.mlkit", name = "translate", version.ref = "translation" }
 google-mlkit-smartReply = { group = "com.google.android.gms", name = "play-services-mlkit-smart-reply", version.ref = "smartReply" }
+google-mlkit-subjectSegmentation = { group = "com.google.android.gms", name = "play-services-mlkit-subject-segmentation", version.ref = "subjectSegmentation" }
 google-mlkit-entityExtraction = { group = "com.google.mlkit", name = "entity-extraction", version.ref = "entityExtraction" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 camerax-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }

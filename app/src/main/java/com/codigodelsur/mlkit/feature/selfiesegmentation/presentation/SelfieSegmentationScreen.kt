@@ -1,9 +1,9 @@
 package com.codigodelsur.mlkit.feature.selfiesegmentation.presentation
 
 import android.graphics.Bitmap
+import androidx.activity.compose.BackHandler
 import androidx.camera.core.CameraSelector
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,7 +26,7 @@ import com.codigodelsur.mlkit.core.presentation.component.ShowSnackbarEffect
 import com.codigodelsur.mlkit.core.presentation.model.PSnackbar
 import com.codigodelsur.mlkit.core.presentation.theme.MlkTheme
 import com.codigodelsur.mlkit.feature.selfiesegmentation.presentation.analyzer.SelfieSegmentationAnalyzer
-import com.codigodelsur.mlkit.feature.selfiesegmentation.presentation.component.PhotoEditor
+import com.codigodelsur.mlkit.feature.selfiesegmentation.presentation.component.SelfiePhotoEditor
 import com.codigodelsur.mlkit.feature.selfiesegmentation.presentation.component.SelfieMaskOverlay
 import com.google.mlkit.vision.segmentation.SegmentationMask
 
@@ -66,54 +66,54 @@ private fun SelfieSegmentationScreen(
     onBackClick: () -> Unit
 ) {
     var takenPhoto by remember { mutableStateOf<Bitmap?>(null) }
-    var modifiedPhoto by remember { mutableStateOf<Bitmap?>(null) }
     val currentOnSelfieSegmented by rememberUpdatedState(onSelfieSegmented)
+
+    BackHandler(enabled = takenPhoto != null) {
+        takenPhoto = null
+    }
+
     Column(modifier = modifier.fillMaxSize()) {
         MlkTopAppBar(
             titleRes = R.string.feature_selfie_segmentation_title,
-            onNavigationClick = onBackClick
+            onNavigationClick = {
+                if (takenPhoto != null) {
+                    takenPhoto = null
+                } else {
+                    onBackClick()
+                }
+            }
         )
         CameraPermissionRequester(
             modifier = Modifier.weight(1.0f)
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                if (takenPhoto == null || modifiedPhoto == null) {
-                    MlkCameraPreview(
-                        modifier = Modifier.fillMaxSize(),
-                        cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA,
-                        scaleType = PreviewView.ScaleType.FIT_CENTER,  // Needed to position the overlay correctly
-                        onPhotoCapture = {
-                            takenPhoto = it
-                            modifiedPhoto = it
-                        },
-                        setUpDetector = { cameraController, context ->
-                            cameraController.setImageAnalysisAnalyzer(
-                                ContextCompat.getMainExecutor(context),
-                                SelfieSegmentationAnalyzer(onSelfieSegmented = currentOnSelfieSegmented)
-                            )
-                        }
-                    ) {
-                        if (selfieMask != null) {
-                            SelfieMaskOverlay(
-                                modifier = Modifier.fillMaxSize(),
-                                foregroundThreshold = foregroundThreshold,
-                                selfieMask = selfieMask
-                            )
-                        }
+            if (takenPhoto == null) {
+                MlkCameraPreview(
+                    modifier = Modifier.fillMaxSize(),
+                    scaleType = PreviewView.ScaleType.FIT_CENTER,  // Needed to position the overlay correctly
+                    cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA,
+                    onPhotoCapture = { takenPhoto = it },
+                    setUpDetector = { cameraController, context ->
+                        cameraController.setImageAnalysisAnalyzer(
+                            ContextCompat.getMainExecutor(context),
+                            SelfieSegmentationAnalyzer(onSelfieSegmented = currentOnSelfieSegmented)
+                        )
                     }
-                } else {
-                    PhotoEditor(
-                        modifier = Modifier.fillMaxSize(),
-                        photo = modifiedPhoto!!,
-                        onPhotoEdit = { modifiedPhoto = it },
-                        onResetClick = { modifiedPhoto = takenPhoto },
-                        onCloseClick = {
-                            takenPhoto = null
-                            modifiedPhoto = null
-                        },
-                        onEditionError = onEditorError
-                    )
+                ) {
+                    if (selfieMask != null) {
+                        SelfieMaskOverlay(
+                            modifier = Modifier.fillMaxSize(),
+                            foregroundThreshold = foregroundThreshold,
+                            selfieMask = selfieMask
+                        )
+                    }
                 }
+            } else {
+                SelfiePhotoEditor(
+                    modifier = Modifier.fillMaxSize(),
+                    photo = takenPhoto!!,
+                    onCloseClick = { takenPhoto = null },
+                    onEditionError = onEditorError
+                )
             }
         }
     }

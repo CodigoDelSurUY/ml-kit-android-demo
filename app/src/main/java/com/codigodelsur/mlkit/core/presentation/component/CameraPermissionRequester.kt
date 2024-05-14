@@ -60,7 +60,8 @@ private fun CameraPermissionNotGranted(
         verticalArrangement = Arrangement.Center
     ) {
         Icon(
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier
+                .size(50.dp)
                 .padding(bottom = 16.dp),
             painter = painterResource(R.drawable.ic_camera_24),
             contentDescription = null

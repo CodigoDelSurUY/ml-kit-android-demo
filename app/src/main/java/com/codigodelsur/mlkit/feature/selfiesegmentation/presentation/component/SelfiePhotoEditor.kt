@@ -13,7 +13,10 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -31,14 +34,13 @@ import com.google.mlkit.vision.segmentation.SegmentationMask
 import com.google.mlkit.vision.segmentation.selfie.SelfieSegmenterOptions
 
 @Composable
-fun PhotoEditor(
+fun SelfiePhotoEditor(
     modifier: Modifier = Modifier,
     photo: Bitmap,
-    onPhotoEdit: (Bitmap) -> Unit,
-    onResetClick: () -> Unit,
     onCloseClick: () -> Unit,
     onEditionError: (Throwable) -> Unit
 ) {
+    var modifiedPhoto by remember { mutableStateOf(photo) }
     val segmenter = remember {
         Segmentation.getClient(
             SelfieSegmenterOptions.Builder()
@@ -49,7 +51,7 @@ fun PhotoEditor(
     Box(modifier = modifier) {
         Image(
             modifier = Modifier.fillMaxSize(),
-            bitmap = photo.asImageBitmap(),
+            bitmap = modifiedPhoto.asImageBitmap(),
             contentScale = ContentScale.Crop,
             contentDescription = ""
         )
@@ -77,14 +79,9 @@ fun PhotoEditor(
                     val image = InputImage.fromBitmap(photo, 0)
                     segmenter.process(image)
                         .addOnSuccessListener { mask ->
-                            mask?.let {
-                                val modifiedPhoto = removeBackground(photo, mask)
-                                onPhotoEdit(modifiedPhoto)
-                            }
+                            modifiedPhoto = removeBackground(photo, mask)
                         }
-                        .addOnFailureListener { th ->
-                            onEditionError(th)
-                        }
+                        .addOnFailureListener(onEditionError)
                 }
             ) {
                 Text(
@@ -93,10 +90,10 @@ fun PhotoEditor(
             }
 
             Button(
-                onClick = onResetClick
+                onClick = { modifiedPhoto = photo }
             ) {
                 Text(
-                    text = stringResource(id = R.string.selfie_segmentation_reset)
+                    text = stringResource(id = R.string.reset)
                 )
             }
         }
@@ -158,14 +155,12 @@ private fun removeBackground(originalBitmap: Bitmap, mask: SegmentationMask): Bi
 @Composable
 private fun PhotoEditorPreview() {
     MlkTheme {
-        PhotoEditor(
+        SelfiePhotoEditor(
             modifier = Modifier.fillMaxSize(),
             photo = BitmapFactory.decodeResource(
                 LocalContext.current.resources,
                 R.drawable.clown_nose
             ),
-            onPhotoEdit = {},
-            onResetClick = {},
             onCloseClick = {},
             onEditionError = {},
         )

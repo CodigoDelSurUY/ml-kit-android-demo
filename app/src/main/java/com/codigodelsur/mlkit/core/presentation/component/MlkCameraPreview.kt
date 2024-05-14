@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -45,7 +46,7 @@ fun MlkCameraPreview(
     scaleType: PreviewView.ScaleType = PreviewView.ScaleType.FILL_CENTER,
     onPhotoCapture: ((Bitmap) -> Unit)? = null,
     onSwitchCamera: ((CameraSelector) -> Unit)? = null,
-    setUpDetector: (LifecycleCameraController, Context) -> Unit,
+    setUpDetector: ((LifecycleCameraController, Context) -> Unit)? = null,
     overlays: @Composable BoxScope.() -> Unit = {}
 ) {
     val context: Context = LocalContext.current
@@ -55,7 +56,9 @@ fun MlkCameraPreview(
     val background = MaterialTheme.colorScheme.surface
     Box(modifier = modifier) {
         AndroidView(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .clipToBounds(),
             factory = {
                 PreviewView(it).apply {
                     layoutParams = LinearLayout.LayoutParams(
@@ -66,7 +69,7 @@ fun MlkCameraPreview(
                     implementationMode = PreviewView.ImplementationMode.COMPATIBLE
                     this.scaleType = scaleType
                 }.also { previewView ->
-                    setUpDetector(cameraController, context)
+                    setUpDetector?.invoke(cameraController, context)
                     cameraController.bindToLifecycle(lifecycleOwner)
                     previewView.controller = cameraController
                 }

@@ -69,6 +69,12 @@ sealed class PMLKitFeature(
         descriptionRes = R.string.feature_entity_extraction_description
     )
 
+    data object SubjectSegmentation: PMLKitFeature(
+        imageRes = R.drawable.card_subject_segmentation,
+        titleRes = R.string.feature_subject_segmentation_title,
+        descriptionRes = R.string.feature_subject_segmentation_description
+    )
+
     companion object {
         val all = listOf(
             BarcodeScanner,
@@ -77,6 +83,7 @@ sealed class PMLKitFeature(
             ObjectDetection,
             PoseDetection,
             SelfieSegmentation,
+            SubjectSegmentation,
             DocumentScanner,
             Translation,
             SmartReply,

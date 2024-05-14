@@ -42,7 +42,7 @@ private fun DrawScope.drawSunglasses(sunglassesBitmap: ImageBitmap, face: Face, 
     val rightEye = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position ?: return
     val faceBox = face.boundingBox.toComposeRect()
     val midpoint = calculateMidPoint(leftEye, rightEye)
-    val scale = faceBox.width / sunglassesBitmap.width
+    val scale = faceBox.width * 0.9f / sunglassesBitmap.width
     val rotationAngle = if (mirror) {
         calculateRotationAngle(rightEye, leftEye)
     } else {

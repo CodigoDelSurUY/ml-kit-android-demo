@@ -23,6 +23,8 @@ import com.codigodelsur.mlkit.feature.selfiesegmentation.presentation.navigation
 import com.codigodelsur.mlkit.feature.selfiesegmentation.presentation.navigation.selfieSegmentationScreen
 import com.codigodelsur.mlkit.feature.smartreply.presentation.navigation.navigateToSmartReply
 import com.codigodelsur.mlkit.feature.smartreply.presentation.navigation.smartReplyScreen
+import com.codigodelsur.mlkit.feature.subjectsegmentation.presentation.navigation.navigateToSubjectSegmentation
+import com.codigodelsur.mlkit.feature.subjectsegmentation.presentation.navigation.subjectSegmentationScreen
 import com.codigodelsur.mlkit.feature.textrecognition.presentation.navigation.navigateToTextRecognition
 import com.codigodelsur.mlkit.feature.textrecognition.presentation.navigation.textRecognitionScreen
 import com.codigodelsur.mlkit.feature.translation.presentation.navigation.navigateToTranslation
@@ -41,26 +43,28 @@ fun MlkNavHost(
     ) {
         explorerScreen(onFeatureClick = { feature ->
             when (feature) {
-                is PMLKitFeature.DocumentScanner -> navController.navigateToDocumentScanner()
-                is PMLKitFeature.TextRecognition -> navController.navigateToTextRecognition()
                 is PMLKitFeature.BarcodeScanner -> navController.navigateToBarcodeScanner()
+                is PMLKitFeature.TextRecognition -> navController.navigateToTextRecognition()
                 is PMLKitFeature.FaceDetection -> navController.navigateToFaceDetection()
-                is PMLKitFeature.SelfieSegmentation -> navController.navigateToSelfieSegmentation()
                 is PMLKitFeature.ObjectDetection -> navController.navigateToObjectDetection()
                 is PMLKitFeature.PoseDetection -> navController.navigateToPoseDetection()
+                is PMLKitFeature.SelfieSegmentation -> navController.navigateToSelfieSegmentation()
+                is PMLKitFeature.SubjectSegmentation -> navController.navigateToSubjectSegmentation()
+                is PMLKitFeature.DocumentScanner -> navController.navigateToDocumentScanner()
                 is PMLKitFeature.Translation -> navController.navigateToTranslation()
                 is PMLKitFeature.SmartReply -> navController.navigateToSmartReply()
                 is PMLKitFeature.EntityExtraction -> navController.navigateToEntityExtraction()
             }
         })
 
-        documentScannerScreen { navController.popBackStack() }
+        barcodeScannerScreen { navController.popBackStack() }
         textRecognitionScreen { navController.popBackStack() }
         faceDetectionScreen { navController.popBackStack() }
         objectDetectionScreen { navController.popBackStack() }
-        barcodeScannerScreen { navController.popBackStack() }
         poseDetectionScreen { navController.popBackStack() }
         selfieSegmentationScreen { navController.popBackStack() }
+        subjectSegmentationScreen { navController.popBackStack() }
+        documentScannerScreen { navController.popBackStack() }
         translationScreen { navController.popBackStack() }
         smartReplyScreen { navController.popBackStack() }
         entityExtractionScreen { navController.popBackStack() }

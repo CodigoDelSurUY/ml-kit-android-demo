@@ -2,6 +2,7 @@
     <string name="app_name">ML Kit Demo</string>
     <string name="back">Back</string>
     <string name="close">Close</string>
+    <string name="reset">Reset</string>
 
     <string name="error_default">Something went wrong, please try again later.</string>
 
@@ -44,9 +45,8 @@
     <string name="pose_detection_classification_none">None</string>
 
     <string name="feature_selfie_segmentation_title">Selfie Segmentation</string>
-    <string name="feature_selfie_segmentation_description">Selfie Segmentation</string>
+    <string name="feature_selfie_segmentation_description">Separate the background from users within a scene and focus on what matters.</string>
     <string name="selfie_segmentation_remove_background">Remove background</string>
-    <string name="selfie_segmentation_reset">Reset</string>
 
     <string name="feature_translation_title">Translation</string>
     <string name="feature_translation_description">Translate text between 58 languages, entirely on device.</string>
@@ -64,4 +64,9 @@
     <string name="entity_extraction_instructions">Type any text to extract its entities and provide actions based on them.</string>
     <string name="entity_extraction_input_label">Input</string>
     <string name="entity_extraction_extract_button">Extract Entities</string>
+
+    <string name="feature_subject_segmentation_title">Subject Segmentation</string>
+    <string name="feature_subject_segmentation_description">Separate subjects (people, pets, or objects) from the background in a picture.</string>
+    <string name="subject_segmentation_show_foreground_bitmap">Show foreground bitmap</string>
+    <string name="subject_segmentation_show_subject_masks">Show subject masks</string>
 </resources>

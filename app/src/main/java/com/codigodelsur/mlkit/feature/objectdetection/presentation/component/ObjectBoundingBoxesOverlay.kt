@@ -12,8 +12,8 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import com.codigodelsur.mlkit.core.presentation.theme.Typography
+import com.codigodelsur.mlkit.core.presentation.util.getForId
 import com.google.mlkit.vision.objects.DetectedObject
-import kotlin.random.Random
 
 @Composable
 fun ObjectBoundingBoxesOverlay(
@@ -26,7 +26,7 @@ fun ObjectBoundingBoxesOverlay(
         for (detectedObject in objects) {
             val label = detectedObject.labels.maxByOrNull { it.confidence }
 
-            val color = getColorFromId(detectedObject.trackingId ?: 1)
+            val color = Color.getForId(detectedObject.trackingId ?: 1)
             // Draw the rectangle
             val boxRect = detectedObject.boundingBox.toComposeRect()
             if (label != null || !hideUnlabeled) {
@@ -57,12 +57,4 @@ fun ObjectBoundingBoxesOverlay(
             }
         }
     }
-}
-
-private fun getColorFromId(trackingId: Int): Color {
-    val random = Random(trackingId.hashCode())
-    val r = random.nextInt(256)
-    val g = random.nextInt(256)
-    val b = random.nextInt(256)
-    return Color(r, g, b)
 }

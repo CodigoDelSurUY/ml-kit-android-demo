@@ -32,7 +32,7 @@
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
-            android:value="ocr,face,barcode,langid,smart_reply" />
+            android:value="ocr,face,barcode,langid,smart_reply,subject_segment" />
 
     </application>
 
