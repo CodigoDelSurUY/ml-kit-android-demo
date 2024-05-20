@@ -84,18 +84,17 @@ private fun ObjectDetectionScreen(
 //                        val objectDetector = ObjectDetection.getClient(options)
 
                         // Custom object detector
+                        // For more information on how to download compatible pre-trained models or
+                        // training your own, visit: https://developers.google.com/ml-kit/custom-models
                         val localModel = LocalModel.Builder()
-                            .setAssetFilePath("object/mario_android_cup.tflite")
+                            .setAssetFilePath("object/efficientnet.tflite")
                             .build()
-
                         val customObjectDetectorOptions =
                             CustomObjectDetectorOptions.Builder(localModel)
                                 .setDetectorMode(CustomObjectDetectorOptions.STREAM_MODE)
-                                .setClassificationConfidenceThreshold(0.9f)
                                 .enableMultipleObjects()
                                 .enableClassification()
                                 .build()
-
                         val objectDetector =
                             ObjectDetection.getClient(customObjectDetectorOptions)
 
