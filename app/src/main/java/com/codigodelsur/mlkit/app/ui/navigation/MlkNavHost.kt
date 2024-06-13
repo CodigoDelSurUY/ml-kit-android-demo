@@ -57,16 +57,16 @@ fun MlkNavHost(
             }
         })
 
-        barcodeScanningScreen { navController.popBackStack() }
-        textRecognitionScreen { navController.popBackStack() }
-        faceDetectionScreen { navController.popBackStack() }
-        objectDetectionScreen { navController.popBackStack() }
-        poseDetectionScreen { navController.popBackStack() }
-        selfieSegmentationScreen { navController.popBackStack() }
-        subjectSegmentationScreen { navController.popBackStack() }
-        documentScannerScreen { navController.popBackStack() }
-        translationScreen { navController.popBackStack() }
-        smartReplyScreen { navController.popBackStack() }
-        entityExtractionScreen { navController.popBackStack() }
+        barcodeScanningScreen { navController.navigateUp() }
+        textRecognitionScreen { navController.navigateUp() }
+        faceDetectionScreen { navController.navigateUp() }
+        objectDetectionScreen { navController.navigateUp() }
+        poseDetectionScreen { navController.navigateUp() }
+        selfieSegmentationScreen { navController.navigateUp() }
+        subjectSegmentationScreen { navController.navigateUp() }
+        documentScannerScreen { navController.navigateUp() }
+        translationScreen { navController.navigateUp() }
+        smartReplyScreen { navController.navigateUp() }
+        entityExtractionScreen { navController.navigateUp() }
     }
 }
